@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Numerics;
 using System.IO;
 using System.Text;
+using OpenCvSharp;
 
 namespace Coursework
 {
@@ -14,7 +15,6 @@ namespace Coursework
         {
             InitializeComponent();
             ComputeHash();
-            //EllipticCurve.EllipticCurve p = new EllipticCurve.EllipticCurve();
         }
         private void ComputeHash()
         {
@@ -28,7 +28,11 @@ namespace Coursework
 
             bool res = ds.toVerifyDigitalSignature(message, signature, Q);
             textBox1.Text = signature;
-            textBox2.Text = res.ToString();
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
         }
     }
     public class DigitalSignature
@@ -76,6 +80,7 @@ namespace Coursework
             BigInteger[] gcd = gcdex(b % a, a);
             return new BigInteger[] { gcd[0], gcd[2] - (b / a) * gcd[1], gcd[1] };
         }
+
         BigInteger invmod(BigInteger a, BigInteger m)
         {
             BigInteger[] g = gcdex(a, m);
@@ -118,6 +123,9 @@ namespace Coursework
                 return false;
         }
     }
+
+    //public class 
+
     public static class RandomExtension
     {
         public static BigInteger Next(this Random random, BigInteger minValue, BigInteger maxValue)
