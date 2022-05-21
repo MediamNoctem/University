@@ -94,3 +94,10 @@ C:\Users\romAn\OneDrive\Documents\GitHub\Coursework-2022\Coursework\bin\Debug\sv
 C:\Users\romAn\OneDrive\Documents\GitHub\Coursework-2022\Coursework\bin\Debug\tr\ZedGraph.resources.dll
 C:\Users\romAn\OneDrive\Documents\GitHub\Coursework-2022\Coursework\bin\Debug\zh-cn\ZedGraph.resources.dll
 C:\Users\romAn\OneDrive\Documents\GitHub\Coursework-2022\Coursework\bin\Debug\zh-tw\ZedGraph.resources.dll
+C:\Users\romAn\OneDrive\Documents\GitHub\Coursework-2022\Coursework\bin\Debug\dll\x86\OpenCvSharpExtern.dll
+C:\Users\romAn\OneDrive\Documents\GitHub\Coursework-2022\Coursework\bin\Debug\dll\x86\opencv_videoio_ffmpeg455.dll
+C:\Users\romAn\OneDrive\Documents\GitHub\Coursework-2022\Coursework\bin\Debug\dll\x64\OpenCvSharpExtern.dll
+C:\Users\romAn\OneDrive\Documents\GitHub\Coursework-2022\Coursework\bin\Debug\dll\x64\opencv_videoio_ffmpeg455_64.dll
+C:\Users\romAn\OneDrive\Documents\GitHub\Coursework-2022\Coursework\bin\Debug\OpenCvSharp.Extensions.dll
+C:\Users\romAn\OneDrive\Documents\GitHub\Coursework-2022\Coursework\bin\Debug\System.Drawing.Common.dll
+C:\Users\romAn\OneDrive\Documents\GitHub\Coursework-2022\Coursework\bin\Debug\OpenCvSharp.Extensions.xml
