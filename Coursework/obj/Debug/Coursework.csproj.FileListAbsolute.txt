@@ -71,13 +71,9 @@ C:\Users\romAn\OneDrive\Documents\GitHub\Coursework-2022\Coursework\bin\Debug\x8
 C:\Users\romAn\OneDrive\Documents\GitHub\Coursework-2022\Coursework\bin\Debug\x86\msvcp140.dll
 C:\Users\romAn\OneDrive\Documents\GitHub\Coursework-2022\Coursework\bin\Debug\x86\opencv_ffmpeg343.dll
 C:\Users\romAn\OneDrive\Documents\GitHub\Coursework-2022\Coursework\bin\Debug\x86\vcruntime140.dll
-C:\Users\romAn\OneDrive\Documents\GitHub\Coursework-2022\Coursework\bin\Debug\Emgu.CV.UI.dll
-C:\Users\romAn\OneDrive\Documents\GitHub\Coursework-2022\Coursework\bin\Debug\Emgu.CV.World.dll
 C:\Users\romAn\OneDrive\Documents\GitHub\Coursework-2022\Coursework\bin\Debug\OpenCvSharp.dll
 C:\Users\romAn\OneDrive\Documents\GitHub\Coursework-2022\Coursework\bin\Debug\System.ValueTuple.dll
 C:\Users\romAn\OneDrive\Documents\GitHub\Coursework-2022\Coursework\bin\Debug\ZedGraph.dll
-C:\Users\romAn\OneDrive\Documents\GitHub\Coursework-2022\Coursework\bin\Debug\Emgu.CV.UI.xml
-C:\Users\romAn\OneDrive\Documents\GitHub\Coursework-2022\Coursework\bin\Debug\Emgu.CV.World.xml
 C:\Users\romAn\OneDrive\Documents\GitHub\Coursework-2022\Coursework\bin\Debug\OpenCvSharp.xml
 C:\Users\romAn\OneDrive\Documents\GitHub\Coursework-2022\Coursework\bin\Debug\System.ValueTuple.xml
 C:\Users\romAn\OneDrive\Documents\GitHub\Coursework-2022\Coursework\bin\Debug\ZedGraph.xml
