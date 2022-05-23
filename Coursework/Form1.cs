@@ -130,31 +130,25 @@ namespace Coursework
         public EllipticCurve.EllipticCurvePoint G = new EllipticCurve.EllipticCurvePoint(EllipticCurve.EllipticCurve.x_G, EllipticCurve.EllipticCurve.y_G);
         BigInteger n = EllipticCurve.EllipticCurve.n;
         BigInteger e;
-
-        //private byte[] Rotate90(byte[] ar, int beginningOfImage, int height, int width)
-        //{
-        //    byte[] res = new byte[ar.LongLength];
-        //    for (int i = 0; i < height; i++)
-        //        for (int j = 0; j < width; j++)
-        //            res[i * height + j] = ar[]
-        //}
-
-        private KeyPoint[] Sort(KeyPoint[] A, int n, string angle, int heigth, int width)
+        private void Round(KeyPoint[] A, int n)
         {
-            int i, j;
-            float tmp;
-            KeyPoint t;
-
-            for (i = 0; i < n; i++)
+            for (int i = 0; i < n; i++)
             {
                 A[i].Pt.X = (float)Math.Round(A[i].Pt.X);
                 A[i].Pt.Y = (float)Math.Round(A[i].Pt.Y);
             }
-            if (angle == "0")
+        }
+
+        private KeyPoint[] Sort(KeyPoint[] A, int n, int angle, int heigth, int width)
+        {
+            float tmp;
+            KeyPoint t;
+
+            if (angle == 0)
             {
-                for (i = 0; i < n - 1; i++)
+                for (int i = 0; i < n - 1; i++)
                 {
-                    for (j = i + 1; j < n; j++)
+                    for (int j = i + 1; j < n; j++)
                     {
                         if (A[i].Pt.Y > A[j].Pt.Y)
                         {
@@ -165,9 +159,9 @@ namespace Coursework
                     }
                 }
 
-                for (i = 0; i < n - 1; i++)
+                for (int i = 0; i < n - 1; i++)
                 {
-                    for (j = i + 1; j < n; j++)
+                    for (int j = i + 1; j < n; j++)
                     {
                         if (A[i].Pt.Y == A[j].Pt.Y)
                         {
@@ -180,12 +174,12 @@ namespace Coursework
                         }
                     }
                 }
-                    
+
                 Queue<float> q = new Queue<float>();
                 q.Enqueue(A[0].Pt.X);
                 q.Enqueue(A[0].Pt.Y);
                 int k = 0;
-                for (i = 0; i < n; i++)
+                for (int i = 0; i < n; i++)
                 {
                     if (!(A[k].Pt.X == A[i].Pt.X && A[k].Pt.Y == A[i].Pt.Y))
                     {
@@ -195,7 +189,7 @@ namespace Coursework
                     }
                 }
                 KeyPoint[] B = new KeyPoint[q.Count / 2];
-                for (i = 0; i < B.Length; i++)
+                for (int i = 0; i < B.Length; i++)
                 {
                     B[i].Pt.X = q.Dequeue();
                     B[i].Pt.Y = q.Dequeue();
@@ -205,56 +199,61 @@ namespace Coursework
             }
             else
             {
-                if (angle == "90")
+                //if (angle == "90")
+                //{
+                //for (int i = 0; i < n; i++)
+                //{
+                //    A[i].Pt.X = width - A[i].Pt.X - 1;
+                //    A[i].Pt.Y = heigth - A[i].Pt.Y - 1;
+                //}
+                for (int i = 0; i < n; i++)
                 {
-                    for (i = 0; i < n; i++)
-                    {
-                        tmp = A[i].Pt.Y;
-                        A[i].Pt.Y = width - A[i].Pt.X - 1;
-                        A[i].Pt.X = tmp;
-                    }
-
-                    A = Sort(A, n, "0", heigth, width);
-                    n = A.Length;
-
-                    for (i = 0; i < n; i++)
-                    {
-                        tmp = A[i].Pt.X;
-                        A[i].Pt.X = width - A[i].Pt.Y - 1;
-                        A[i].Pt.Y = tmp;
-                    }
-                    return A;
+                    tmp = A[i].Pt.Y;
+                    A[i].Pt.Y = width - A[i].Pt.X - 1;
+                    A[i].Pt.X = tmp;
                 }
-                else
+                A = Sort(A, n, 0, heigth, width);
+                n = A.Length;
+
+                for (int i = 0; i < n; i++)
                 {
-                    if (angle == "180")
-                    {
-                        for (i = 0; i < n; i++)
-                        {
-                            A[i].Pt.X = width - A[i].Pt.X - 1;
-                            A[i].Pt.Y = heigth - A[i].Pt.Y - 1;
-                        }
 
-                        A = Sort(A, n, "0", heigth, width);
-                        n = A.Length;
-
-                        for (i = 0; i < n; i++)
-                        {
-                            A[i].Pt.X = width - A[i].Pt.X - 1;
-                            A[i].Pt.Y = heigth - A[i].Pt.Y - 1;
-                        }
-                        return A;
-                    }
-                    else
-                    {
-                        return null;
-                    }
+                    tmp = A[i].Pt.X;
+                    A[i].Pt.X = width - A[i].Pt.Y - 1;
+                    A[i].Pt.Y = tmp;
                 }
+                return A;
+                //}
+                //else
+                //{
+                //    if (angle == "180")
+                //    {
+                //        for (int i = 0; i < n; i++)
+                //        {
+                //            A[i].Pt.X = width - A[i].Pt.X - 1;
+                //            A[i].Pt.Y = heigth - A[i].Pt.Y - 1;
+                //        }
+
+                //        A = Sort(A, n, "0", heigth, width);
+                //        n = A.Length;
+
+                //        for (int i = 0; i < n; i++)
+                //        {
+                //            A[i].Pt.X = width - A[i].Pt.X - 1;
+                //            A[i].Pt.Y = heigth - A[i].Pt.Y - 1;
+                //        }
+                //        return A;
+                //    }
+                //    else
+                //    {
+                //        return null;
+                //    }
+                //}
             }
-            
+
         }
 
-        private void Reverse(byte[] ar, int n)
+        private byte[] Reverse(byte[] ar, int n)
         {
             byte tmp;
             int len;
@@ -271,6 +270,7 @@ namespace Coursework
                     ar[i * 4 + q] = ar[n - i * 4 - (4 - q)];
                     ar[n - i * 4 - (4 - q)] = tmp;
                 }
+            return ar;
         }
 
         private KeyPoint[] ToFindReferencePoints(InputArray image)
@@ -291,29 +291,22 @@ namespace Coursework
             Mat imageOriginal = OpenCvSharp.Extensions.BitmapConverter.ToMat(message);
 
             KeyPoint[] point = ToFindReferencePoints(imageOriginal);
-
-            point = Sort(point, point.Length, "0", height, width);
-            MessageBox.Show("len = " + point.Length.ToString());
+            Round(point, point.Length);
+            point = Sort(point, point.Length, 0, height, width);
 
             byte[] pixel = new byte[point.Length * 4];
             int len = point.Length, h = 0;
 
-            // 00101001000101110110111010110011010100101110100110010011011000100000011100000000100011101011010111000011011100100101010011000001000000100001000000101010110111010111000001101101011101010010100100110001110011110111101111000110110000011000100111101010111110001001101011101010010100110000000100111101000111111100000111010100010001100000010110010011000110011010001001110111010011111000101101011001111100101100111110111111101101001111110111110011011000000011001011100101101011000001000001000010000100001101110000010110
-            // 72488970228380509287422715226575535698893157273063074627791787432852706183111
-            // 62070622898698443831883535403436258712770888294397026493185421712108624767191
-            
-            for (int i = 0; i < height; i++)
+            for (int i = 0; i < width; i++)
             {
-                for (int j = 0; j < width; j++)
+                for (int j = 0; j < height; j++)
                 {
                     if ((h / 4) != len)
                     {
                         if (point[h / 4].Pt.X == j && point[h / 4].Pt.Y == i)
                         {
                             for (int q = 0; q < 4; q++)
-                            {
-                                pixel[h + q] = img[(i * width + j) * 4 + q + beginningOfImage];
-                            }
+                                pixel[h + q] = img[(j * width + i) * 4 + q + beginningOfImage];
                             h += 4;
                         }
                     }
@@ -391,8 +384,6 @@ namespace Coursework
             BigInteger r = digitalSignature.Substring(0, 256).FromBinary();
             BigInteger s = digitalSignature.Substring(256).FromBinary();
             KeyPoint[] point;
-            string[] angle = { "0", "90", "180" };
-            byte[] pixel = null;
 
             if ((!(r > 0 && r < n)) || (!(s > 0 && s < n)))
                 return false;
@@ -405,40 +396,85 @@ namespace Coursework
             Bitmap message = new Bitmap(image);
             Mat imageOriginal = OpenCvSharp.Extensions.BitmapConverter.ToMat(message);
             point = ToFindReferencePoints(imageOriginal);
+            Round(point, point.Length);
+            List<byte> pixels = null;
+            byte[] pixel = null;
 
-            int len, h = 0, flag = 0;
+            int len, h;
+            bool flag = false;
 
-            for (int i = 0; i < angle.Length; i++)
+            for (int i = 0; i < 2; i++)
             {
-                MessageBox.Show("i = " + i.ToString() + "\nflag = " + flag.ToString());
-
-                if (flag != 1)
+                if (!flag)
                 {
-                    point = Sort(point, point.Length, angle[i], height, width);
-                    len = point.Length;
-                    pixel = new byte[len * 4];
+                    pixels = new List<byte> { };
 
-                    for (int t = 0; t < height; t++)
+                    point = Sort(point, point.Length, i, height, width);
+                    len = point.Length;
+                    h = 0;
+
+                    for (int t = 0; t < width; t++)
                     {
-                        for (int l = 0; l < width; l++)
+                        for (int l = 0; l < height; l++)
                         {
-                            if (h / 4 != len)
+                            if (h != len)
                             {
-                                if (point[h / 4].Pt.X == l && point[h / 4].Pt.Y == t)
+                                if (point[h].Pt.X == l && point[h].Pt.Y == t)
                                 {
                                     for (int q = 0; q < 4; q++)
-                                        pixel[h + q] = img[(t * width + l) * 4 + q + beginningOfImage];
-                                    h += 4;
+                                        pixels.Add(img[(l * width + t) * 4 + q + beginningOfImage]);
+                                    h++;
                                 }
                             }
                             else
                                 break;
                         }
                     }
+                    if (pixels.Count != (len * 4))
+                    {
+                        pixels = new List<byte> { };
+                        h = 0;
+                        for (int t = height - 1; t >= 0; t--)
+                        {
+                            for (int l = 0; l < width; l++)
+                            {
+                                if (h != len)
+                                {
+                                    if (point[h].Pt.X == t && point[h].Pt.Y == l)
+                                    {
+                                        for (int q = 0; q < 4; q++)
+                                            pixels.Add(img[(t * width + l) * 4 + q + beginningOfImage]);
+                                        h++;
+                                        if ((h != len) && (point[h].Pt.X == point[h - 1].Pt.X) && (point[h].Pt.Y < point[h - 1].Pt.Y))
+                                            t--;
+                                    }
+                                }
+                                else
+                                    break;
+                            }
+                        }
+                    }
+
+                    pixel = pixels.ToArray();
                 }
 
                 string sr = "", sep;
-                len = pixel.Length;
+                len = pixels.Count;
+
+                MessageBox.Show("count_pixels = " + (pixels.Count / 4).ToString());
+
+                for (int t = 0; t < len; t += 4)
+                {
+                    if (t % 3 == 1)
+                        sep = "\n";
+                    else
+                        sep = "        ";
+                    sr += pixels[t].ToString() + " " + pixels[t + 1].ToString() + " " + pixels[t + 2].ToString() + " " + pixels[t + 3].ToString() + sep;
+                }
+                MessageBox.Show(sr);
+
+                MessageBox.Show("count_pix = " + (pixel.Length / 4).ToString());
+                sr = "";
                 for (int t = 0; t < len; t += 4)
                 {
                     if (t % 3 == 1)
@@ -448,8 +484,6 @@ namespace Coursework
                     sr += pixel[t].ToString() + " " + pixel[t + 1].ToString() + " " + pixel[t + 2].ToString() + " " + pixel[t + 3].ToString() + sep;
                 }
                 MessageBox.Show(sr);
-
-
 
                 byte[] hash = G256.GetHash(pixel);
                 BigInteger alpha = 0;
@@ -470,35 +504,36 @@ namespace Coursework
 
                 BigInteger R = C.x % n;
 
+
+
                 StreamWriter sw = new StreamWriter("file.txt");
                 for (int k = 0; k < point.Length; k++)
                     sw.WriteLine(point[k].Pt.X.ToString() + " " + point[k].Pt.Y.ToString());
                 sw.Close();
                 MessageBox.Show("Файл!");
 
+
+
                 if (R == r)
                     return true;
                 else
                 {
-                    if (angle[i] == "180")
+                    if (flag != true)
                     {
-                        if (flag != 1)
+                        pixel = Reverse(pixel, pixel.Length);
+                        string st = "";
+                        for (int t = 0; t < pixel.Length / 4; t++)
                         {
-                            Reverse(pixel, pixel.Length);
-                            string st = "";
-                            for (int t = 0; t < pixel.Length / 4; t++)
-                            {
-                                for (int q = 0; q < 4; q++)
-                                    st += pixel[t * 4 + q] + "  ";
-                                st += "    ";
-                            }
-                            MessageBox.Show("Reverse:\n" + st);
-                            flag = 1;
-                            i--;
+                            for (int q = 0; q < 4; q++)
+                                st += pixel[t * 4 + q] + "  ";
+                            st += "    ";
                         }
-                        else
-                            i++;
+                        MessageBox.Show("Reverse:\n" + st);
+                        flag = true;
+                        i--;
                     }
+                    else
+                        flag = false;
                 }
             }
             return false;
