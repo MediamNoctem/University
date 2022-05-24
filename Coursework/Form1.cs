@@ -130,6 +130,7 @@ namespace Coursework
         public EllipticCurve.EllipticCurvePoint G = new EllipticCurve.EllipticCurvePoint(EllipticCurve.EllipticCurve.x_G, EllipticCurve.EllipticCurve.y_G);
         BigInteger n = EllipticCurve.EllipticCurve.n;
         BigInteger e;
+
         private void Round(KeyPoint[] A, int n)
         {
             for (int i = 0; i < n; i++)
@@ -199,13 +200,6 @@ namespace Coursework
             }
             else
             {
-                //if (angle == "90")
-                //{
-                //for (int i = 0; i < n; i++)
-                //{
-                //    A[i].Pt.X = width - A[i].Pt.X - 1;
-                //    A[i].Pt.Y = heigth - A[i].Pt.Y - 1;
-                //}
                 for (int i = 0; i < n; i++)
                 {
                     tmp = A[i].Pt.Y;
@@ -219,36 +213,10 @@ namespace Coursework
                 {
 
                     tmp = A[i].Pt.X;
-                    A[i].Pt.X = width - A[i].Pt.Y - 1;
+                    A[i].Pt.X = heigth - A[i].Pt.Y - 1;
                     A[i].Pt.Y = tmp;
                 }
                 return A;
-                //}
-                //else
-                //{
-                //    if (angle == "180")
-                //    {
-                //        for (int i = 0; i < n; i++)
-                //        {
-                //            A[i].Pt.X = width - A[i].Pt.X - 1;
-                //            A[i].Pt.Y = heigth - A[i].Pt.Y - 1;
-                //        }
-
-                //        A = Sort(A, n, "0", heigth, width);
-                //        n = A.Length;
-
-                //        for (int i = 0; i < n; i++)
-                //        {
-                //            A[i].Pt.X = width - A[i].Pt.X - 1;
-                //            A[i].Pt.Y = heigth - A[i].Pt.Y - 1;
-                //        }
-                //        return A;
-                //    }
-                //    else
-                //    {
-                //        return null;
-                //    }
-                //}
             }
 
         }
@@ -301,13 +269,15 @@ namespace Coursework
             {
                 for (int j = 0; j < height; j++)
                 {
-                    if ((h / 4) != len)
+                    if (h != len)
                     {
-                        if (point[h / 4].Pt.X == j && point[h / 4].Pt.Y == i)
+                        if (point[h].Pt.X == j && point[h].Pt.Y == i)
                         {
                             for (int q = 0; q < 4; q++)
-                                pixel[h + q] = img[(j * width + i) * 4 + q + beginningOfImage];
-                            h += 4;
+                                pixel[h * 4 + q] = img[(j * width + i) * 4 + q + beginningOfImage];
+                            h++;
+                            if ((h != len) && (point[h].Pt.Y == point[h - 1].Pt.Y))
+                                i--;
                         }
                     }
                     else
@@ -424,6 +394,8 @@ namespace Coursework
                                     for (int q = 0; q < 4; q++)
                                         pixels.Add(img[(l * width + t) * 4 + q + beginningOfImage]);
                                     h++;
+                                    if ((h != len) && (point[h].Pt.Y == point[h - 1].Pt.Y))
+                                        t--;
                                 }
                             }
                             else
@@ -446,7 +418,7 @@ namespace Coursework
                                             pixels.Add(img[(t * width + l) * 4 + q + beginningOfImage]);
                                         h++;
                                         if ((h != len) && (point[h].Pt.X == point[h - 1].Pt.X) && (point[h].Pt.Y < point[h - 1].Pt.Y))
-                                            t--;
+                                            t++;
                                     }
                                 }
                                 else
@@ -461,20 +433,20 @@ namespace Coursework
                 string sr = "", sep;
                 len = pixels.Count;
 
-                MessageBox.Show("count_pixels = " + (pixels.Count / 4).ToString());
+                //MessageBox.Show("count_pixels = " + (pixels.Count / 4).ToString());
 
-                for (int t = 0; t < len; t += 4)
-                {
-                    if (t % 3 == 1)
-                        sep = "\n";
-                    else
-                        sep = "        ";
-                    sr += pixels[t].ToString() + " " + pixels[t + 1].ToString() + " " + pixels[t + 2].ToString() + " " + pixels[t + 3].ToString() + sep;
-                }
-                MessageBox.Show(sr);
+                //for (int t = 0; t < len; t += 4)
+                //{
+                //    if (t % 3 == 1)
+                //        sep = "\n";
+                //    else
+                //        sep = "        ";
+                //    sr += pixels[t].ToString() + " " + pixels[t + 1].ToString() + " " + pixels[t + 2].ToString() + " " + pixels[t + 3].ToString() + sep;
+                //}
+                //MessageBox.Show(sr);
 
                 MessageBox.Show("count_pix = " + (pixel.Length / 4).ToString());
-                sr = "";
+                //sr = "";
                 for (int t = 0; t < len; t += 4)
                 {
                     if (t % 3 == 1)
