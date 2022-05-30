@@ -15,9 +15,9 @@ namespace Coursework
     public partial class Form1 : Form
     {
         private int height, width, beginningOfImage;
-        DigitalSignature ds = new DigitalSignature();
+        private DigitalSignature ds = new DigitalSignature();
         private byte[] imageOriginal;
-        BigInteger d;
+        private BigInteger d;
         
         public Form1()
         {
@@ -46,6 +46,9 @@ namespace Coursework
                 MessageBox.Show("Выберите изображение!", "Ошибка!");
             else
             {
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
+
                 Image image = pictureBox1.Image;
                 height = image.Height;
                 width = image.Width;
@@ -63,20 +66,34 @@ namespace Coursework
                     else
                     {
                         d = BigInteger.Parse(textBox1.Text);
-                        string signature = ds.ToFormDigitalSignature(image, d, beginningOfImage, height, width);
-                        EllipticCurve.EllipticCurvePoint Q = ds.G.scalMultNumByPointEC(d);
+                        BigInteger signature = BigInteger.Parse(ds.ToFormDigitalSignature(image, d, beginningOfImage, height, width));
 
-                        StreamWriter sw = new StreamWriter("file.txt");
-                        sw.WriteLine(Q.x);
-                        sw.WriteLine(Q.y);
-                        sw.Close();
-
-                        textBox2.Text = signature;
+                        textBox2.Text = signature.ToString("X");
+                        stopwatch.Stop();
+                        label9.Text = "Время формирования подписи: " + ((float)(stopwatch.ElapsedMilliseconds / 1000.0f)).ToString() + " c";
                     }
                 }
                 else
                     MessageBox.Show("Формат пикселя не WRGB!");
             }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            pictureBox2.Image = null;
+            textBox3.Text = "";
+            textBox6.Text = "";
+            textBox4.Text = "";
+            textBox5.Text = "";
+            label10.Text = "";
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            pictureBox1.Image = null;
+            textBox1.Text = "";
+            textBox2.Text = "";
+            label9.Text = "";
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -96,6 +113,9 @@ namespace Coursework
                 MessageBox.Show("Выберите изображение!", "Ошибка!");
             else
             {
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
+
                 Image image = pictureBox2.Image;
                 height = image.Height;
                 width = image.Width;
@@ -115,9 +135,12 @@ namespace Coursework
                         beginningOfImage = Convert.ToInt32(BeginningOfImage(imageOriginal[13], imageOriginal[12], imageOriginal[11], imageOriginal[10]), 16);
 
                         EllipticCurve.EllipticCurvePoint Q = new EllipticCurve.EllipticCurvePoint(BigInteger.Parse(textBox3.Text), BigInteger.Parse(textBox6.Text));
-                        string signature = textBox4.Text;
+                        BigInteger sig = BigInteger.Parse(textBox4.Text, System.Globalization.NumberStyles.HexNumber);
+                        string signature = sig.ToString();
                         bool res = ds.ToVerifyDigitalSignature(image, signature, Q, beginningOfImage, height, width);
                         textBox5.Text = res.ToString();
+                        stopwatch.Stop();
+                        label10.Text = "Время проверки подлинности: " + ((float)(stopwatch.ElapsedMilliseconds / 1000.0f)).ToString() + " c";
                     }
                 }
             }
@@ -125,7 +148,7 @@ namespace Coursework
     }
     public class DigitalSignature
     {
-        Gost_34_11_2012 G256 = new Gost_34_11_2012(256);
+        Gost_34_11_2018 G256 = new Gost_34_11_2018(256);
         EllipticCurve.EllipticCurvePoint C;
         public EllipticCurve.EllipticCurvePoint G = new EllipticCurve.EllipticCurvePoint(EllipticCurve.EllipticCurve.x_G, EllipticCurve.EllipticCurve.y_G);
         BigInteger n = EllipticCurve.EllipticCurve.n;
@@ -285,24 +308,6 @@ namespace Coursework
                 }
             }
 
-            string sr = "", sep;
-            len = pixel.Length;
-            for (int i = 0; i < len; i += 4)
-            {
-                if (i % 3 == 1)
-                    sep = "\n";
-                else
-                    sep = "        ";
-                sr += pixel[i].ToString() + " " + pixel[i + 1].ToString() + " " + pixel[i + 2].ToString() + " " + pixel[i + 3].ToString() + sep;
-            }
-            MessageBox.Show(sr);
-
-            StreamWriter sw = new StreamWriter("file1.txt");
-            for (int i = 0; i < point.Length; i++)
-                sw.WriteLine(point[i].Pt.X.ToString() + " " + point[i].Pt.Y.ToString());
-            sw.Close();
-
-
             byte[] hash = G256.GetHash(pixel);
             BigInteger alpha = 0, k, r, s;
             Random rnd = new Random();
@@ -430,33 +435,6 @@ namespace Coursework
                     pixel = pixels.ToArray();
                 }
 
-                string sr = "", sep;
-                len = pixels.Count;
-
-                //MessageBox.Show("count_pixels = " + (pixels.Count / 4).ToString());
-
-                //for (int t = 0; t < len; t += 4)
-                //{
-                //    if (t % 3 == 1)
-                //        sep = "\n";
-                //    else
-                //        sep = "        ";
-                //    sr += pixels[t].ToString() + " " + pixels[t + 1].ToString() + " " + pixels[t + 2].ToString() + " " + pixels[t + 3].ToString() + sep;
-                //}
-                //MessageBox.Show(sr);
-
-                MessageBox.Show("count_pix = " + (pixel.Length / 4).ToString());
-                //sr = "";
-                for (int t = 0; t < len; t += 4)
-                {
-                    if (t % 3 == 1)
-                        sep = "\n";
-                    else
-                        sep = "        ";
-                    sr += pixel[t].ToString() + " " + pixel[t + 1].ToString() + " " + pixel[t + 2].ToString() + " " + pixel[t + 3].ToString() + sep;
-                }
-                MessageBox.Show(sr);
-
                 byte[] hash = G256.GetHash(pixel);
                 BigInteger alpha = 0;
 
@@ -476,16 +454,6 @@ namespace Coursework
 
                 BigInteger R = C.x % n;
 
-
-
-                StreamWriter sw = new StreamWriter("file.txt");
-                for (int k = 0; k < point.Length; k++)
-                    sw.WriteLine(point[k].Pt.X.ToString() + " " + point[k].Pt.Y.ToString());
-                sw.Close();
-                MessageBox.Show("Файл!");
-
-
-
                 if (R == r)
                     return true;
                 else
@@ -500,7 +468,6 @@ namespace Coursework
                                 st += pixel[t * 4 + q] + "  ";
                             st += "    ";
                         }
-                        MessageBox.Show("Reverse:\n" + st);
                         flag = true;
                         i--;
                     }

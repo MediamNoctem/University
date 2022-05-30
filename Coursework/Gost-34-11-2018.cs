@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace Coursework
 {
-    internal class Gost_34_11_2012
+    internal class Gost_34_11_2018
     {
         // Matrix A for MixColumns (L) function
         private ulong[] A = {
@@ -141,7 +141,7 @@ namespace Coursework
 
         public int outLen = 0;
 
-        public Gost_34_11_2012(int outputLenght)
+        public Gost_34_11_2018(int outputLenght)
         {
             if (outputLenght == 512)
             {
