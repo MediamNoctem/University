@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="jQuery_library.js"></script>
+    <script type="text/javascript" src="jQuery.js"></script>
+</head>
+<body>
+    <div class="content">
+        <div class="s">
+            <div class="ex">
+                <button onmousedown="clickOnButton(0)">Задание 1</button>
+            </div>
+            <div class="sol"></div>
+        </div>
+        <div class="s">
+            <div class="ex">
+                <button onmousedown="clickOnButton(1)">Задание 2</button>
+            </div>
+            <div class="sol">
+                <table class="calendar">
+                    <thead>
+                    <tr>
+                        <td>‹</td>
+                        <td colspan="5"></td>
+                        <td>›</td>
+                    </tr>
+                    <tr>
+                        <td>Пн</td>
+                        <td>Вт</td>
+                        <td>Ср</td>
+                        <td>Чт</td>
+                        <td>Пт</td>
+                        <td>Сб</td>
+                        <td>Вс</td>
+                    </tr>
+                    <tbody>
+                </table>
+            </div>
+        </div>
+        <div class="s">
+            <div class="ex">
+                <button onmousedown="clickOnButton(2)">Задание 3</button>
+            </div>
+            <div class="sol"></div>
+        </div>
+        <div class="s">
+            <div class="ex">
+                <button onmousedown="clickOnButton(3)">Задание 4</button>
+            </div>
+            <div class="sol">
+                <button onmousedown="printText()">Выполнить</button>
+                <div class="block">
+                    <p>Блок 1</p>
+                </div>
+                <div class="block">
+                    <p>Блок 2</p>
+                </div>
+                <div class="block">
+                    <p>Блок 3</p>
+                </div>
+                <div class="block">
+                    <p>Блок 4</p>
+                </div>
+                <div class="block">
+                    <p>Блок 5</p>
+                </div>
+            </div>
+        </div>
+        <div class="s">
+            <div class="ex">
+                <button onmousedown="clickOnButton(4)">Задание 5</button>
+            </div>
+            <div class="sol">
+                <button onmousedown="createTable()">Создать таблицу</button>
+                <div class="table">
+                </div>
+            </div>
+        </div>
+        <div class="s">
+            <div class="ex">
+                <button onmousedown="clickOnButton(5)">Задание 6</button>
+            </div>
+            <div class="sol">
+            </div>
+        </div>
+        <div class="s">
+            <div class="ex">
+                <button onmousedown="clickOnButton(6)">Задание 7</button>
+            </div>
+            <div class="sol">
+                <div class="container" onclick="toggle(this)">
+                    <span class="title">Сладости</span>
+                </div>
+                <div id="menu">
+                    <ul id="menu_ul">
+                        <li class="menu_li" onclick="slowlyHide(0)">Торт</li>
+                        <li class="menu_li" onclick="slowlyHide(1)">Пирожное</li>
+                        <li class="menu_li" onclick="slowlyHide(2)">Конфета</li>
+                        <li class="menu_li" onclick="slowlyHide(3)">Леденец</li>
+                        <li class="menu_li" onclick="slowlyHide(4)">Пончик</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="s">
+            <div class="ex">
+                <button onmousedown="clickOnButton(7);ex8(setEvent)">Задание 8</button>
+            </div>
+            <div class="sol">
+                <p id="txt">Лесной олень.</p>
+                <img src="1.jpg" id="img" alt="">
+            </div>
+        </div>
+        <div class="s">
+            <div class="ex">
+                <button onmousedown="clickOnButton(8)">Задания 9-10</button>
+            </div>
+            <div class="sol">
+                <div id="error"></div>
+                <form class="form9">
+                    <ul class="f_ul">
+                        <li>
+                            <p><label for="fname">Фамилия</label>
+                                <input class="inp" type="text" id="fname" onblur="checkText(this)" onfocus="onF(this)"></p>
+                        </li>
+                        <li>
+                            <p><label for="name">Имя</label>
+                                <input class="inp" type="text" id="name" onblur="checkText(this)" onfocus="onF(this)"></p>
+                        </li>
+                        <li>
+                            <p><label for="mname">Отчество</label>
+                                <input class="inp" type="text" id="mname" onblur="checkText(this)" onfocus="onF(this)"></p>
+                        </li>
+                        <li>
+                            <p><label for="bday">Дата рождения</label>
+                                <input class="inp" type="date" id="bday" min="1900-01-01" max="2012-12-31"></p>
+                        </li>
+                        <li>
+                            <p><label for="email">E-mail</label>
+                                <input class="inp" type="email" id="email" onblur="checkEmail(this)" onfocus="onF(this)"></p>
+                        </li>
+                        <li>
+                            <p><label for="phone">Телефон</label>
+                                <input class="inp" type="text" id="phone" onblur="checkPhone(this)" onfocus="onF(this)"></p>
+                        </li>
+                        <li>
+                            <p><label for="login">Логин</label>
+                                <input class="inp" type="text" id="login" maxlength="25"></p>
+                        </li>
+                        <li>
+                            <p><label for="pass1">Пароль</label>
+                                <input class="inp" type="password" id="pass1" maxlength="25" value=""></p>
+                        </li>
+                        <li>
+                            <p><label for="pass2">Подтвердите пароль</label>
+                                <input class="inp" type="password" id="pass2" maxlength="25" value="" onblur="checkPass(this)" onfocus="onF(this)"></p>
+                        </li>
+                    </ul>
+                    <fieldset>
+                        <legend>Навыки</legend>
+                        <ul class="f_ul">
+                            <li><input type="checkbox" id="asp">ASP<br/></li>
+                            <li><input type="checkbox" id="js">JavaScript<br/></li>
+                            <li><input type="checkbox" id="php">PHP<br/></li>
+                            <li><input type="checkbox" id="html">HTML<br/></li>
+                        </ul>
+                    </fieldset>
+                    <input type="reset" onclick="delErrors()" value="Очистить форму">
+                    <button type="submit">Отправить</button>
+                </form>
+            </div>
+        </div>
+        <div class="s">
+            <div class="ex">
+                <button onmousedown="clickOnButton(9)">Задание jQuery</button>
+            </div>
+            <div class="sol" id="jQuery">
+                <div class="balls">
+                    <div class="field">
+                        <div class="ball red"></div>
+                    </div>
+                    <div class="field">
+                        <div class="ball red"></div>
+                    </div>
+                    <div class="field">
+                        <div class="ball red"></div>
+                    </div>
+                    <div class="field">
+                        <div class="ball"></div>
+                    </div>
+                    <div class="field">
+                        <div class="ball blue"></div>
+                    </div>
+                    <div class="field">
+                        <div class="ball blue"></div>
+                    </div>
+                    <div class="field">
+                        <div class="ball blue"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!--        <div class="s">-->
+<!--            <div class="ex">-->
+<!--                <button onmousedown="clickOnButton(10)">Задание PHP</button>-->
+<!--            </div>-->
+<!--            <div class="sol">-->
+<!--            </div>-->
+<!--        </div>-->
+    </div>
+    <script type="text/javascript" src="script.js"></script>
+</body>
+</html>

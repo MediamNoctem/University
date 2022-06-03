@@ -1,0 +1,242 @@
+@media (max-width: 1156px) {
+    .content {
+        width: 70% !important;
+    }
+}
+
+@media (max-width: 700px) {
+    body {
+        font-size: 1rem !important;
+    }
+    button {
+        font-size: 1.4rem !important;
+    }
+    .calendar {
+        font-size: 1rem !important;
+    }
+}
+
+html {
+    height: 100%;
+}
+body {
+    /*height: 100%;*/
+    background-image: url("background4.jpg");
+    background-position: top;
+    background-size: cover;
+    background-attachment: fixed;
+    color: #283141;
+    font-family: "Book Antiqua", serif;
+    font-size: 1.2rem;
+}
+.content {
+    display: table;
+    width: 50%;
+    margin: 50px auto 50px;
+    background-color: #252524;
+    opacity: 95%;
+    border-radius: 20px;
+    box-shadow: 0 0 15px black;
+}
+.s {
+    display: table;
+    width: 80%;
+    margin: 50px auto 50px;
+    border: #c8e0c0 dashed thin;
+}
+.ex {
+    display: table;
+    text-align: center;
+    width: 100%;
+    margin: 0 auto;
+}
+button {
+    width: 90%;
+    margin: 28px auto 20px;
+    font-family: "Book Antiqua", serif;
+
+    background-color: #f6f6e4;
+    color: #292933;
+    text-decoration: none;
+    border: 2px solid #292933;
+    border-radius: 50px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    padding: 15px 0;
+}
+button:hover {
+    color: #f6f6e4;
+    background-color: #00ca5d;
+}
+.sol {
+    display: none;
+    width: 90%;
+    margin: 20px auto;
+    padding: 10px;
+    text-align: center;
+    color: #000000;
+    background-color: #f6f6e4;
+}
+
+.calendar {
+    width: 60%;
+    margin: 10px auto;
+    padding: 10px;
+    background-color: #fff;
+    box-shadow: 0 0 15px rgba(14, 13, 13, 0.3);
+    line-height: 1.5em;
+    font-size: 1.2rem;
+    text-align: center;
+}
+.calendar thead tr:last-child {
+    color: rgb(0, 0, 0);
+}
+.calendar thead tr:nth-child(1) td:nth-child(2) {
+    color: rgb(0, 0, 0);
+}
+.calendar thead tr:nth-child(1) td:nth-child(1):hover, .calendar thead tr:nth-child(1) td:nth-child(3):hover {
+    cursor: pointer;
+}
+.calendar tbody td {
+    color: rgb(62, 66, 70);
+}
+.calendar tbody td:nth-child(n+6), .calendar .holiday {
+    color: rgb(255, 0, 0);
+}
+.calendar tbody td.today {
+    background: rgb(61, 124, 29);
+    color: #fff;
+    border-radius: 5px;
+}
+
+.block {
+    background-color: black;
+    color: #f6f6e4;
+    padding: 1px;
+    margin: 10px;
+}
+
+.table {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+}
+
+#menu {
+    margin: 0;
+    list-style: none;
+    padding-left: 20px;
+    display: none;
+}
+
+.container {
+    display: inline-block;
+    cursor: pointer;
+}
+
+.menu_li {
+    width: 85px;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+#img {
+    position: relative;
+    z-index: 2;
+    margin-top: 50px;
+    opacity: 0;
+    transition: opacity 1.5s;
+    width: 500px;
+}
+#txt {
+    z-index: 1;
+    font-size: 50px;
+    position: absolute;
+    margin-top: 150px;
+    left: 0;
+    right: 0;
+}
+
+.form9 {
+    margin: 10px auto;
+    width: 400px;
+    padding: 1em;
+    border: 1px solid #5fa419;
+    border-radius: 1em;
+}
+.f_ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+label {
+    display: inline-block;
+    width: 150px;
+    text-align: right;
+
+}
+.inp {
+    font: 1em sans-serif;
+    width: 200px;
+    box-sizing: border-box;
+    border: 1px solid rgb(122, 168, 78);
+}
+.inp:focus {
+    border-color: #000;
+    background-color: #cbc3c3;
+}
+
+fieldset {
+    padding: 1em;
+    border: 1px solid #5fa419;
+    border-radius: 1em;
+}
+
+#error {
+    height: 1.1em;
+    font-size: 1.1em;
+}
+
+.error {
+    font: 1em sans-serif;
+    width: 200px;
+    box-sizing: border-box;
+    border: 1px solid rgb(0, 0, 0);
+    background-color: rgb(255, 0, 0);
+}
+
+.balls {
+    margin: 50px;
+    display: flex;
+    justify-content: center;
+}
+
+.field {
+    width: 54px;
+    height: 54px;
+    background: linear-gradient(20deg, #3f4146, #888d99);
+    border: #292933 solid 2px;
+    display: flex;
+    justify-content: center;
+    margin: -1px;
+}
+
+.ball {
+    display: block;
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+}
+
+.red {
+    cursor: pointer;
+    background: radial-gradient(closest-corner at 18px 18px, #d62719, #6f160e);
+}
+
+.blue {
+    cursor: pointer;
+    background: radial-gradient(closest-corner at 18px 18px, #2b35e7,#20256f);
+}

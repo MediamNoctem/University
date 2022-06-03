@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1020</width>
+    <height>505</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>Century Gothic</family>
+    <pointsize>14</pointsize>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>20</y>
+      <width>461</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Общее время работы над заданиями:</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>20</y>
+      <width>171</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>660</x>
+      <y>20</y>
+      <width>55</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>мин.</string>
+    </property>
+   </widget>
+   <widget class="QTableWidget" name="tableWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>70</y>
+      <width>1001</width>
+      <height>421</height>
+     </rect>
+    </property>
+    <row>
+     <property name="text">
+      <string>Время работы над заданиями ЭВМ, мин</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>Коэффициент простоя ЭВМ, %</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>Коэффициент использования, %</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>Общее количество обработанных заданий</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>Количество обработанных заданий после 1-й ЭВМ</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>Количество оставшихся заданий в очереди</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>Макс. количество заданий в очереди</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>Общее количество заданий в очереди</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>Среднее время простоя задания в очереди, мин</string>
+     </property>
+    </row>
+    <column>
+     <property name="text">
+      <string>1-я ЭВМ</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>2-я ЭВМ</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>3-я ЭВМ</string>
+     </property>
+    </column>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
