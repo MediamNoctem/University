@@ -1,0 +1,24 @@
+blockchain:
+- hash: 000000e56e729b593235e9d0aaa09018319b37b23dd717761364dbbb9391ffc2
+  previousHash: '0'
+  listOfTransactions:
+  - sender: ''
+    recipient: ''
+    transferSize: 0.0
+  dateOfCreation: 1671531957159
+  proof: 242277
+- hash: 0000006c3c5b90f4fbbf2e4f438e15f9a0db13c686879fee552a68ce60c42a18
+  previousHash: 000000e56e729b593235e9d0aaa09018319b37b23dd717761364dbbb9391ffc2
+  listOfTransactions:
+  - sender: '00000002'
+    recipient: '00000003'
+    transferSize: 100.01
+  - sender: '00000003'
+    recipient: '00000001'
+    transferSize: 500.0
+  dateOfCreation: 1671532005546
+  proof: 22271865
+numOfBlock: 2
+files:
+  blockchain: src/blockchain/blockchain2.yaml
+  listOfUsers: src/blockchain/listOfUsers2.yaml

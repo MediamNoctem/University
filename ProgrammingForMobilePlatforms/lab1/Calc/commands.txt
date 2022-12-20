@@ -1,0 +1,4 @@
+cd Calc
+javac -sourcepath src -d classes src/calc/Calc.java
+cd classes
+java -classpath . calc.Calc
