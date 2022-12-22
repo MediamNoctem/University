@@ -7,9 +7,10 @@ import org.yaml.snakeyaml.constructor.Constructor;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Objects;
 
 public class ListOfUsers {
-    ArrayList<User> listOfUsers;
+    private ArrayList<User> listOfUsers;
 
     public ListOfUsers() {
         this.listOfUsers = new ArrayList<>();
@@ -23,24 +24,25 @@ public class ListOfUsers {
         this.listOfUsers = listOfUsers;
     }
 
-//    public User getUser(String walletId) {
-//        for (User user : this.listOfUsers)
-//            if (Objects.equals(user.getWalletId(), walletId))
-//                return user;
-//        return null;
-//    }
-
-    public void addUser(String walletId, double balance) {
-        User user = new User(walletId, balance);
-        if (checkUser(user))
-            this.listOfUsers.add(user);
+    public User getUser(String walletId) {
+        for (User user : this.listOfUsers)
+            if (Objects.equals(user.getWalletId(), walletId))
+                return user;
+        return null;
     }
 
-    public boolean checkUser(Object user) {
+    public void addUser(String walletId, double balance) {
+        if (!checkUser(walletId)) {
+            User user = new User(walletId, balance);
+            this.listOfUsers.add(user);
+        }
+    }
+
+    public boolean checkUser(String walletId) {
         for (User userFromList : this.listOfUsers)
-            if (userFromList.equals(user))
-                return false;
-        return true;
+            if (Objects.equals(userFromList.getWalletId(), walletId))
+                return true;
+        return false;
     }
 
     public void toYaml(String path) throws FileNotFoundException {

@@ -1,0 +1,11 @@
+listOfUsers:
+- walletId: '00000001'
+  balance: 35.05
+- walletId: '00000002'
+  balance: 40.1
+- walletId: '00000003'
+  balance: 45.15
+- walletId: '00000000'
+  balance: 30.0
+- walletId: '00000004'
+  balance: 50.2

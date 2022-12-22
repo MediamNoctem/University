@@ -1,7 +1,0 @@
-listOfUsers:
-- walletId: '00000001'
-  balance: 1000.0
-- walletId: '00000002'
-  balance: 5000.05
-- walletId: '00000003'
-  balance: 0.12

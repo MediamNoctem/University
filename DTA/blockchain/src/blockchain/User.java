@@ -28,6 +28,14 @@ public class User {
         this.balance = balance;
     }
 
+    public void increaseBalance(double transferSize) {
+        this.balance += transferSize;
+    }
+
+    public void decreaseBalance(double transferSize) {
+        this.balance -= transferSize;
+    }
+
     public LinkedHashMap<String, Object> toLinkedHashMap() {
         LinkedHashMap<String, Object> map = new LinkedHashMap<>();
         map.put("walletId", this.walletId);

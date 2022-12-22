@@ -1,0 +1,15 @@
+blockchain:
+- hash: 0000008776e65ee0c16463469cdaab1d51b6cfa92db6e7489a55623752975049
+  previousHash: '0'
+  listOfTransactions:
+  - sender: ''
+    recipient: ''
+    transferSize: 0.0
+  dateOfCreation: 1671618890409
+  proof: 6257875
+numOfBlocks: 1
+pool: [
+  ]
+files:
+  blockchain: src/blockchain/yaml/blockchain0.yaml
+  listOfUsers: src/blockchain/yaml/listOfUsers.yaml
