@@ -1,14 +1,10 @@
-import math
 import random
 import numpy as np
 
 
 class Chromosome:
-    def __init__(self, num_edges):
-        self.value = []
-        # max_num_nodes_in_matching = math.ceil(num_nodes / 2)
-        for i in range(num_edges):
-            self.value.append(random.randint(0, 1))
+    def __init__(self, value):
+        self.value = value
 
 
 class Population:
@@ -20,13 +16,6 @@ class Population:
         for i in self.chromosomes:
             list_population.append(i.value)
         return list_population
-
-    def min(self):
-        min = self.chromosomes[0].value
-        for i in self.chromosomes:
-            if min > i.value:
-                min = i.value
-        return min
 
     def print(self):
         s = ""
@@ -43,14 +32,20 @@ class GeneticAlgorithm:
         self.percent_of_best_ones_to_live = percent_of_best_ones_to_live
         self.num_edges = len(edges)
         self.edges = edges
-        self.descendants = []
+        self.descendants = None
 
     def generation_initial_population(self):
         self.population = Population()
         self.population.chromosomes = self.create_new_population()
 
     def create_new_population(self):
-        return [Chromosome(self.num_edges) for _ in range(self.number_generations)]
+        chromosomes = []
+        for _ in range(self.number_generations):
+            chromosome = []
+            for _ in range(self.num_edges):
+                chromosome.append(random.randint(0, 1))
+            chromosomes.append(Chromosome(chromosome))
+        return chromosomes
 
     def get_best_members(self):
         list_cardinality_matching = []
@@ -59,28 +54,41 @@ class GeneticAlgorithm:
             list_cardinality_matching.append(calc_cardinality_matching(self.edges, i.value))
 
         self.Hoare_sorting(list_cardinality_matching, self.population)
+        list_cardinality_matching.reverse()
+        self.population.chromosomes.reverse()
 
-        amount_of_best_values = round(len(self.population.chromosomes) * self.percent_of_best_ones_to_live)
+        amount_of_best_values = round(len(self.population.chromosomes) * (self.percent_of_best_ones_to_live / 100))
+
         return self.population.chromosomes[0:amount_of_best_values]
 
     def crossing_over(self):
+        self.descendants = []
         population_length = len(self.population.chromosomes)
         population_chromosome_length = len(self.population.chromosomes[0].value)
         for i in range(self.number_generations):
-            chromosomes_1 = self.population.chromosomes[random.randint(0, population_length - 1)]
-            chromosomes_2 = self.population.chromosomes[random.randint(0, population_length - 1)]
+            chromosome = self.population.chromosomes[random.randint(0, population_length - 1)]
+            chromosome_1_value = []
+            for c in chromosome.value:
+                chromosome_1_value.append(c)
+            chromosome_1 = Chromosome(chromosome_1_value)
+
+            chromosome = self.population.chromosomes[random.randint(0, population_length - 1)]
+            chromosome_2_value = []
+            for c in chromosome.value:
+                chromosome_2_value.append(c)
+            chromosome_2 = Chromosome(chromosome_2_value)
+
             x = random.randint(0, population_chromosome_length - 2)
-            for j in range(x + 1, population_chromosome_length - 2):
-                tmp = chromosomes_1.value[j]
-                chromosomes_1.value[j] = chromosomes_2.value[j]
-                chromosomes_2 = tmp
-            self.descendants.append(chromosomes_1)
-            self.descendants.append(chromosomes_2)
+            for j in range(x + 1, population_chromosome_length - 1):
+                chromosome_1.value[j], chromosome_2.value[j] = chromosome_2.value[j], chromosome_1.value[j]
+            self.descendants.append(chromosome_1)
+            self.descendants.append(chromosome_2)
 
     def mutate(self):
-        length_chromosome = len(self.population.chromosomes[0].value)
-        for i in self.population.chromosomes:
-            probability = np.random.choice(np.array([0, 1]), 1, p=[1 - self.probability_of_mutation, self.probability_of_mutation])
+        length_chromosome = len(self.descendants[0].value)
+        for i in self.descendants:
+            probability = np.random.choice(np.array([0, 1]), 1, p=[1 - self.probability_of_mutation,
+                                                                   self.probability_of_mutation])
             x = random.randint(0, length_chromosome - 1)
             if probability:
                 if i.value[x]:
@@ -94,16 +102,30 @@ class GeneticAlgorithm:
             self.population.chromosomes = self.get_best_members()
             self.crossing_over()
             self.mutate()
+            for j in self.descendants:
+                self.population.chromosomes.append(j)
+
+            list_cardinality_matching = []
+
+            for k in self.population.chromosomes:
+                list_cardinality_matching.append(calc_cardinality_matching(self.edges, k.value))
+
+            self.Hoare_sorting(list_cardinality_matching, self.population)
+            list_cardinality_matching.reverse()
+            self.population.chromosomes.reverse()
+
+            self.population.chromosomes = self.population.chromosomes[0:self.number_generations]
         self.population.chromosomes = self.get_best_members()
+        Population.print(self.population)
         return self.population.chromosomes[0].value
 
     @staticmethod
     def Hoare_sorting(function_values, population):
         left = 0
         right = len(function_values) - 1
-        l2 = None
-        r2 = None
-        pivot_value = None
+        # l2 = None
+        # r2 = None
+        # pivot_value = None
         lows = []
         highs = []
         lows.append(left)
@@ -123,7 +145,8 @@ class GeneticAlgorithm:
                 if l2 <= r2:
                     if function_values[l2] > function_values[r2]:
                         function_values[l2], function_values[r2] = function_values[r2], function_values[l2]
-                        population.chromosomes[l2].value, population.chromosomes[r2].value = population.chromosomes[r2].value, population.chromosomes[l2].value
+                        population.chromosomes[l2].value, population.chromosomes[r2].value \
+                            = population.chromosomes[r2].value, population.chromosomes[l2].value
                     l2 += 1
                     if r2 > 0:
                         r2 -= 1
@@ -156,7 +179,9 @@ def is_matching(list_edges, matching):
     return True
 
 
-edges = [[1, 2], [1, 6], [2, 3], [2, 6], [3, 4], [3, 5], [5, 6]]
-ga = GeneticAlgorithm(edges, 100, 0.5)
-matching = ga.search_matching(500)
-print(matching)
+# edges = [[1, 7], [1, 8], [2, 8], [3, 5], [3, 6], [3, 7], [4, 6]]
+    # [[1, 2], [1, 6], [2, 3], [2, 6], [3, 4], [3, 5], [5, 6]]
+# ga = GeneticAlgorithm(edges, 100, 30)
+# matching = ga.search_matching(200)
+# print(matching)
+# print(is_matching(edges, matching))
