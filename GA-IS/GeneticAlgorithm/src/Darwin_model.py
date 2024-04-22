@@ -11,12 +11,6 @@ class Population:
     def __init__(self):
         self.chromosomes = None
 
-    def to_list(self):
-        list_population = []
-        for i in self.chromosomes:
-            list_population.append(i.value)
-        return list_population
-
     def print(self):
         s = ""
         for i in self.chromosomes:
@@ -47,18 +41,18 @@ class GeneticAlgorithm:
             chromosomes.append(Chromosome(chromosome))
         return chromosomes
 
-    def get_best_members(self):
+    def sort(self):
         list_cardinality_matching = []
-
-        for i in self.population.chromosomes:
-            list_cardinality_matching.append(calc_cardinality_matching(self.edges, i.value))
+        for k in self.population.chromosomes:
+            list_cardinality_matching.append(calc_cardinality_matching(self.edges, k.value))
 
         self.Hoare_sorting(list_cardinality_matching, self.population)
         list_cardinality_matching.reverse()
         self.population.chromosomes.reverse()
 
+    def get_best_members(self):
+        self.sort()
         amount_of_best_values = round(len(self.population.chromosomes) * (self.percent_of_best_ones_to_live / 100))
-
         return self.population.chromosomes[0:amount_of_best_values]
 
     def crossing_over(self):
@@ -96,27 +90,21 @@ class GeneticAlgorithm:
                 else:
                     i.value[x] = 1
 
+    def selection(self):
+        self.sort()
+        self.population.chromosomes = self.population.chromosomes[0:self.number_generations]
+
     def search_matching(self, iterations):
         self.generation_initial_population()
+
         for i in range(iterations):
             self.population.chromosomes = self.get_best_members()
             self.crossing_over()
             self.mutate()
             for j in self.descendants:
                 self.population.chromosomes.append(j)
+            self.selection()
 
-            list_cardinality_matching = []
-
-            for k in self.population.chromosomes:
-                list_cardinality_matching.append(calc_cardinality_matching(self.edges, k.value))
-
-            self.Hoare_sorting(list_cardinality_matching, self.population)
-            list_cardinality_matching.reverse()
-            self.population.chromosomes.reverse()
-
-            self.population.chromosomes = self.population.chromosomes[0:self.number_generations]
-        self.population.chromosomes = self.get_best_members()
-        Population.print(self.population)
         return self.population.chromosomes[0].value
 
     @staticmethod
@@ -179,9 +167,9 @@ def is_matching(list_edges, matching):
     return True
 
 
-# edges = [[1, 7], [1, 8], [2, 8], [3, 5], [3, 6], [3, 7], [4, 6]]
+edges = [[1, 7], [1, 8], [2, 8], [3, 5], [3, 6], [3, 7], [4, 6]]
     # [[1, 2], [1, 6], [2, 3], [2, 6], [3, 4], [3, 5], [5, 6]]
-# ga = GeneticAlgorithm(edges, 100, 30)
-# matching = ga.search_matching(200)
-# print(matching)
-# print(is_matching(edges, matching))
+ga = GeneticAlgorithm(edges, 100, 30)
+matching = ga.search_matching(200)
+print(matching)
+print(is_matching(edges, matching))
