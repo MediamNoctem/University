@@ -26,7 +26,7 @@
       <x>10</x>
       <y>200</y>
       <width>600</width>
-      <height>600</height>
+      <height>601</height>
      </rect>
     </property>
     <property name="title">
@@ -82,7 +82,7 @@
      </item>
      <item>
       <property name="text">
-       <string>Генетический алгоритм (модель Ламарка)</string>
+       <string>Генетический алгоритм (модель де Фриза)</string>
       </property>
      </item>
     </widget>
@@ -109,7 +109,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Построить график</string>
+      <string>Найти</string>
      </property>
     </widget>
    </widget>
@@ -117,9 +117,9 @@
     <property name="geometry">
      <rect>
       <x>620</x>
-      <y>440</y>
+      <y>400</y>
       <width>261</width>
-      <height>361</height>
+      <height>401</height>
      </rect>
     </property>
     <property name="title">
@@ -129,7 +129,7 @@
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>50</y>
+       <y>40</y>
        <width>221</width>
        <height>31</height>
       </rect>
@@ -142,7 +142,7 @@
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>90</y>
+       <y>80</y>
        <width>221</width>
        <height>31</height>
       </rect>
@@ -152,7 +152,7 @@
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>150</y>
+       <y>130</y>
        <width>221</width>
        <height>31</height>
       </rect>
@@ -165,7 +165,7 @@
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>190</y>
+       <y>170</y>
        <width>221</width>
        <height>31</height>
       </rect>
@@ -175,7 +175,7 @@
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>250</y>
+       <y>220</y>
        <width>221</width>
        <height>31</height>
       </rect>
@@ -188,10 +188,33 @@
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>290</y>
+       <y>260</y>
        <width>221</width>
        <height>31</height>
       </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_6">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>350</y>
+       <width>221</width>
+       <height>31</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_8">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>310</y>
+       <width>221</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Частота катастроф&lt;span style=&quot; color:#ff0000;&quot;&gt;*&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
    </widget>
@@ -207,7 +230,7 @@
     <property name="title">
      <string>Наибольшее паросочетание</string>
     </property>
-    <widget class="QLineEdit" name="lineEdit_6">
+    <widget class="QLineEdit" name="lineEdit_7">
      <property name="enabled">
       <bool>true</bool>
      </property>
@@ -230,7 +253,7 @@
       <x>620</x>
       <y>0</y>
       <width>261</width>
-      <height>431</height>
+      <height>391</height>
      </rect>
     </property>
     <property name="title">
@@ -240,7 +263,7 @@
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>50</y>
+       <y>40</y>
        <width>221</width>
        <height>31</height>
       </rect>
@@ -253,7 +276,7 @@
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>90</y>
+       <y>80</y>
        <width>221</width>
        <height>31</height>
       </rect>
@@ -263,7 +286,7 @@
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>150</y>
+       <y>130</y>
        <width>221</width>
        <height>31</height>
       </rect>
@@ -276,7 +299,7 @@
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>190</y>
+       <y>170</y>
        <width>221</width>
        <height>31</height>
       </rect>
@@ -286,7 +309,7 @@
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>250</y>
+       <y>220</y>
        <width>221</width>
        <height>31</height>
       </rect>
@@ -299,9 +322,9 @@
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>290</y>
+       <y>260</y>
        <width>221</width>
-       <height>121</height>
+       <height>111</height>
       </rect>
      </property>
      <property name="toolTip">

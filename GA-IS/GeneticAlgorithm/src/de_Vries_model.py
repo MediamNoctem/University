@@ -11,13 +11,20 @@ class Population:
     def __init__(self):
         self.chromosomes = None
 
+    def print(self):
+        s = ""
+        for i in self.chromosomes:
+            s += str(i.value) + "  "
+        print(s)
+
 
 class GeneticAlgorithm:
-    def __init__(self, edges, number_generations, percent_of_best_ones_to_live):
+    def __init__(self, edges, number_generations, percent_of_best_ones_to_live, frequency_disasters):
         self.population = None
         self.number_generations = number_generations
         self.probability_of_mutation = 0.2
         self.percent_of_best_ones_to_live = percent_of_best_ones_to_live
+        self.frequency_disasters = frequency_disasters - 1
         self.num_edges = len(edges)
         self.edges = edges
         self.descendants = None
@@ -83,6 +90,20 @@ class GeneticAlgorithm:
                     i.value[x] = 0
                 else:
                     i.value[x] = 1
+        # length_chromosome = len(self.descendants[0].value)
+        # magnitude_mutation = random.randint(0, length_chromosome // 2)
+        #
+        # for i in self.descendants:
+        #     probability = np.random.choice(np.array([0, 1]), 1, p=[1 - self.probability_of_mutation,
+        #                                                            self.probability_of_mutation])
+        #     if probability:
+        #         for m in range(magnitude_mutation):
+        #             x = random.randint(0, length_chromosome - 1)
+        #
+        #             if i.value[x]:
+        #                 i.value[x] = 0
+        #             else:
+        #                 i.value[x] = 1
 
     def selection(self):
         self.sort()
@@ -92,6 +113,8 @@ class GeneticAlgorithm:
         self.generation_initial_population()
 
         for i in range(iterations):
+            if (i > 0) and ((i % self.frequency_disasters) == 0):
+                self.population.chromosomes = self.population.chromosomes[0:round(len(self.population.chromosomes) * 0.1)]
             self.population.chromosomes = self.get_best_members()
             self.crossing_over()
             self.mutate()
@@ -161,10 +184,10 @@ def is_matching(list_edges, matching):
     return True
 
 
-# edges = [[1, 2], [1, 6], [2, 3], [2, 6], [3, 4], [3, 5], [5, 6]]
+# edges = [[1, 7], [1, 8], [2, 8], [3, 5], [3, 6], [3, 7], [4, 6]]
 # [[1, 7], [1, 8], [2, 8], [3, 5], [3, 6], [3, 7], [4, 6]]
 # [[1, 2], [1, 6], [2, 3], [2, 6], [3, 4], [3, 5], [5, 6]]
-# ga = GeneticAlgorithm(edges, 100, 30)
+# ga = GeneticAlgorithm(edges, 100, 30, 50)
 # matching = ga.search_matching(200)
 # print(matching)
 # print(is_matching(edges, matching))

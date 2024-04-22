@@ -1,56 +1,53 @@
 import sys
-import numpy as np
 from PyQt5 import uic
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import *
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
-
-import Darwin_model
+from PyQt5.QtCore import QTimer
+import networkx as nx
+import Darwin_model, de_Vries_model
 
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         QtWidgets.QMainWindow.__init__(self)
         uic.loadUi("form.ui", self)
-        self.gridlayout = None
-        self.f = None
-        # self.comboBox_1.activated.connect(self.on_selected)
-        self.pushButton_1.clicked.connect(self.button1_clicked)
-        self.graph = Canvas(self, width=1, height=1, dpi=100)
-        # self.resize(618, 897)
 
-    # def on_selected(self):
-    #     self.graph.axes.clear()
-    #     if self.comboBox.currentIndex() == 0:
-    #         self.label_6.setVisible(1)
-    #         self.label_7.setVisible(1)
-    #         self.label_8.setVisible(1)
-    #
-    #         self.lineEdit_5.setVisible(1)
-    #         self.lineEdit_6.setVisible(1)
-    #         self.lineEdit.setText("f = (1 - x)^2 + 100*(y - x^2)^2")
-    #         self.label_9.setText("Количество поколений:")
-    #         self.label_10.setText("\nПроцент выживаемости:")
-    #         self.label_11.setText("\n\nКоличество итераций:")
-    #         self.label_12.hide()
-    #         self.lineEdit_10.hide()
-    #         self.lineEdit_11.hide()
-    #         self.lineEdit_12.hide()
-    #         self.label_13.hide()
-    #         self.label_14.hide()
-    #
-    #         self.lineEdit_5.setText("")
-    #         self.lineEdit_6.setText("")
-    #         self.lineEdit_7.setText("")
-    #         self.lineEdit_8.setText("")
-    #         self.lineEdit_9.setText("")
-    #         self.lineEdit_10.setText("")
-    #         self.lineEdit_11.setText("")
-    #         self.lineEdit_12.setText("")
-    #         self.resize(894, 897)
-    #     # else:
-    #     #     if self.comboBox.currentIndex() == 1:
+        self.label_8.hide()
+        self.lineEdit_6.hide()
+
+        self.comboBox_1.activated.connect(self.on_selected)
+        self.pushButton_1.clicked.connect(self.button1_clicked)
+
+        self.figure = Figure()
+        self.canvas = FigureCanvas(self.figure)
+        self.ax = None
+
+    def on_selected(self):
+        if self.comboBox_1.currentIndex() == 0:
+            self.label_8.hide()
+            self.lineEdit_6.hide()
+            self.lineEdit_1.setText("")
+            self.lineEdit_2.setText("")
+            self.textEdit_1.setText("")
+            self.lineEdit_3.setText("")
+            self.lineEdit_4.setText("")
+            self.lineEdit_5.setText("")
+            self.lineEdit_7.setText("")
+        else:
+            if self.comboBox_1.currentIndex() == 1:
+                self.label_8.setVisible(1)
+                self.lineEdit_6.setVisible(1)
+                self.lineEdit_1.setText("")
+                self.lineEdit_2.setText("")
+                self.textEdit_1.setText("")
+                self.lineEdit_3.setText("")
+                self.lineEdit_4.setText("")
+                self.lineEdit_5.setText("")
+                self.lineEdit_6.setText("")
+                self.lineEdit_7.setText("")
     #     #
     #     #     else:
     #     #         if self.comboBox.currentIndex() == 2:
@@ -86,31 +83,21 @@ class MainWindow(QtWidgets.QMainWindow):
     #     #             self.resize(894, 897)
 
     def button1_clicked(self):
-        self.graph.axes.clear()
-        n = 50
-        x = np.linspace(-2, 2, n)
-        y = np.linspace(-2, 2, n)
-        x_y = None
-        xgrid, ygrid = np.meshgrid(x, y)
+        # self.ax.clear()
+        # matching = None
 
-        # self.f = function.Function()
-
-        if self.comboBox.currentIndex() == 0:
-            # self.lineEdit_1.setText("")
-            # self.lineEdit_2.setText("")
-            # self.lineEdit_3.setText("")
-            self.textEdit_1.setText("")
-            num_nodes = int(self.lineEdit_1.text())
-            num_edges = int(self.lineEdit_2.text())
+        # if self.comboBox_1.currentIndex() == 0:
+        #     num_nodes = int(self.lineEdit_1.text())
+        #     num_edges = int(self.lineEdit_2.text())
 
             # Реализовать перевод строки в список ребер
-            edges = self.textEdit_1.text()
+            # edges = self.textEdit_1.text()
 
-            num_population = int(self.lineEdit_3.text())
-            probability = float(self.lineEdit_4.text())
-            iterations = int(self.lineEdit_5.text())
-            ga = Darwin_model.GeneticAlgorithm(edges, num_population, probability)
-            x_y = ga.search_minimum(iterations)
+            # num_population = int(self.lineEdit_3.text())
+            # probability = float(self.lineEdit_4.text())
+            # iterations = int(self.lineEdit_5.text())
+            # ga = Darwin_model.GeneticAlgorithm(edges, num_population, probability)
+            # matching = ga.search_matching(iterations)
         # else:
         #     if self.comboBox.currentIndex() == 1:
         #         self.lineEdit_2.setText("")
@@ -126,7 +113,7 @@ class MainWindow(QtWidgets.QMainWindow):
         #         global_velocity_ratio = float(self.lineEdit_10.text())
         #         iterations = int(self.lineEdit_11.text())
         #         ps = lab4.ParticleSwarmMethod()
-        #         x_y = ps.particle_swarm_method(swarm_size, min_values, max_values, current_velocity_ratio,
+        #         matching = ps.particle_swarm_method(swarm_size, min_values, max_values, current_velocity_ratio,
         #                                        local_velocity_ratio, global_velocity_ratio, iterations)
         #         self.f = self.f.sphere
         #     else:
@@ -144,27 +131,38 @@ class MainWindow(QtWidgets.QMainWindow):
         #             nc = int(self.lineEdit_11.text())
         #             iterations = int(self.lineEdit_12.text())
         #             immnet = lab6.ImmuneNetworkAlgorithm(self.f)
-        #             x_y = immnet.immune_network_algorithm(a, b, size_population_of_antibodies,
+        #             matching = immnet.immune_network_algorithm(a, b, size_population_of_antibodies,
         #                                                   size_population_of_antigens, nb, nd, nc,
         #                                                   iterations, 0.4, 0.4)
 
-        zgrid = np.array([self.f([xgrid[i], ygrid[i]]) for i in range(n)])
-        self.graph.axes.plot_surface(xgrid, ygrid, zgrid, cmap='viridis', linewidths=0.2, alpha=0.8)
-        z = self.f(x_y)
-        self.graph.axes.scatter(x_y[0], x_y[1], z, c="r")
-        self.lineEdit_2.setText(str(round(x_y[0], 3)))
-        self.lineEdit_3.setText(str(round(x_y[1], 3)))
-        self.lineEdit_4.setText(str(round(z, 3)))
-        self.gridlayout = QGridLayout(self.groupBox)
-        self.gridlayout.addWidget(self.graph)
-        self.show()
+        self.timer = QTimer()
+        self.timer.setInterval(10)
+        self.condition_met = False
+        self.timer.timeout.connect(self.update_graph)
+        self.timer.start()
+
+        layout = QVBoxLayout()
+        self.groupBox_2.setLayout(layout)
+        layout.addWidget(self.canvas)
 
 
-class Canvas(FigureCanvasQTAgg):
-    def __init__(self, parent=None, width=1, height=1, dpi=100):
-        fig = Figure(figsize=(width, height), dpi=dpi)
-        self.axes = fig.add_subplot(111, projection='3d')
-        super(Canvas, self).__init__(fig)
+    def update_graph(self):
+        self.figure.clf()
+        G = nx.Graph()
+        nodes = [1, 2, 3, 4, 5, 6]
+        G.add_nodes_from(nodes)
+        edges = [[1, 2], [1, 6], [2, 3], [2, 6], [3, 4], [3, 5], [5, 6]]
+        G.add_edges_from(edges)
+        ax = self.figure.add_subplot(111)
+        pos = nx.spring_layout(G, seed=33)
+        nx.draw(G, pos, ax)
+
+        if True:
+            self.condition_met = True
+            self.timer.stop()
+
+        self.canvas.draw()
+        # self.canvas.update()
 
 
 if __name__ == '__main__':
