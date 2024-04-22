@@ -83,21 +83,29 @@ class MainWindow(QtWidgets.QMainWindow):
     #     #             self.resize(894, 897)
 
     def button1_clicked(self):
-        # self.ax.clear()
-        # matching = None
-
-        # if self.comboBox_1.currentIndex() == 0:
-        #     num_nodes = int(self.lineEdit_1.text())
-        #     num_edges = int(self.lineEdit_2.text())
+        if self.comboBox_1.currentIndex() == 0:
+            num_nodes = int(self.lineEdit_1.text())
+            num_edges = int(self.lineEdit_2.text())
 
             # Реализовать перевод строки в список ребер
-            # edges = self.textEdit_1.text()
+            edges = self.textEdit_1.text()
 
-            # num_population = int(self.lineEdit_3.text())
-            # probability = float(self.lineEdit_4.text())
-            # iterations = int(self.lineEdit_5.text())
-            # ga = Darwin_model.GeneticAlgorithm(edges, num_population, probability)
-            # matching = ga.search_matching(iterations)
+            num_population = int(self.lineEdit_3.text())
+            probability = float(self.lineEdit_4.text())
+            iterations = int(self.lineEdit_5.text())
+            ga = Darwin_model.GeneticAlgorithm(edges, num_population, probability)
+            ga.generation_initial_population()
+
+            self.timer = QTimer()
+            self.timer.setInterval(10)
+            self.condition_met = False
+            k = 0
+            self.timer.timeout.connect(self.update_graph(ga, k, iterations))
+            self.timer.start()
+
+            layout = QVBoxLayout()
+            self.groupBox_2.setLayout(layout)
+            layout.addWidget(self.canvas)
         # else:
         #     if self.comboBox.currentIndex() == 1:
         #         self.lineEdit_2.setText("")
@@ -135,18 +143,8 @@ class MainWindow(QtWidgets.QMainWindow):
         #                                                   size_population_of_antigens, nb, nd, nc,
         #                                                   iterations, 0.4, 0.4)
 
-        self.timer = QTimer()
-        self.timer.setInterval(10)
-        self.condition_met = False
-        self.timer.timeout.connect(self.update_graph)
-        self.timer.start()
-
-        layout = QVBoxLayout()
-        self.groupBox_2.setLayout(layout)
-        layout.addWidget(self.canvas)
-
-
-    def update_graph(self):
+    def update_graph(self, ga, k, iterations):
+        k += 1
         self.figure.clf()
         G = nx.Graph()
         nodes = [1, 2, 3, 4, 5, 6]
@@ -155,9 +153,10 @@ class MainWindow(QtWidgets.QMainWindow):
         G.add_edges_from(edges)
         ax = self.figure.add_subplot(111)
         pos = nx.spring_layout(G, seed=33)
+        matching = ga.next_iteration()
         nx.draw(G, pos, ax)
 
-        if True:
+        if k == iterations:
             self.condition_met = True
             self.timer.stop()
 

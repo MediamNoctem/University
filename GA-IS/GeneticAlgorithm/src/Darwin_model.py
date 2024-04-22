@@ -88,16 +88,18 @@ class GeneticAlgorithm:
         self.sort()
         self.population.chromosomes = self.population.chromosomes[0:self.number_generations]
 
-    def search_matching(self, iterations):
-        self.generation_initial_population()
+    # def search_matching(self):
+    #     self.generation_initial_population()
+        # self.next_iteration()
 
-        for i in range(iterations):
-            self.population.chromosomes = self.get_best_members()
-            self.crossing_over()
-            self.mutate()
-            for j in self.descendants:
-                self.population.chromosomes.append(j)
-            self.selection()
+    def next_iteration(self):
+        # for i in range(iterations):
+        self.population.chromosomes = self.get_best_members()
+        self.crossing_over()
+        self.mutate()
+        for j in self.descendants:
+            self.population.chromosomes.append(j)
+        self.selection()
 
         return self.population.chromosomes[0].value
 
