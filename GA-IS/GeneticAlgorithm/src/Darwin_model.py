@@ -88,20 +88,27 @@ class GeneticAlgorithm:
         self.sort()
         self.population.chromosomes = self.population.chromosomes[0:self.number_generations]
 
-    # def search_matching(self):
-    #     self.generation_initial_population()
-        # self.next_iteration()
+    def search_matching(self, iterations):
+        self.generation_initial_population()
+        for i in range(iterations):
+            self.population.chromosomes = self.get_best_members()
+            self.crossing_over()
+            self.mutate()
+            for j in self.descendants:
+                self.population.chromosomes.append(j)
+            self.selection()
 
-    def next_iteration(self):
-        # for i in range(iterations):
-        self.population.chromosomes = self.get_best_members()
-        self.crossing_over()
-        self.mutate()
-        for j in self.descendants:
-            self.population.chromosomes.append(j)
-        self.selection()
+        return vector_into_edges(self.population.chromosomes[0].value, self.edges)
 
-        return self.population.chromosomes[0].value
+    # def next_iteration(self):
+    #     self.population.chromosomes = self.get_best_members()
+    #     self.crossing_over()
+    #     self.mutate()
+    #     for j in self.descendants:
+    #         self.population.chromosomes.append(j)
+    #     self.selection()
+    #
+    #     return vector_into_edges(self.population.chromosomes[0].value, self.edges)
 
     @staticmethod
     def Hoare_sorting(function_values, population):
@@ -163,7 +170,15 @@ def is_matching(list_edges, matching):
     return True
 
 
-# edges = [[1, 2], [1, 6], [2, 3], [2, 6], [3, 4], [3, 5], [5, 6]]
+def vector_into_edges(vector, edges):
+    edges_list = []
+    for i in range(len(vector)):
+        if vector[i]:
+            edges_list.append(edges[i])
+    return edges_list
+
+
+# edges = [['1', '2'], ['1', '6'], ['2', '3'], ['2', '6'], ['3', '4'], ['3', '5'], ['5', '6']]
 # [[1, 7], [1, 8], [2, 8], [3, 5], [3, 6], [3, 7], [4, 6]]
 # [[1, 2], [1, 6], [2, 3], [2, 6], [3, 4], [3, 5], [5, 6]]
 # ga = GeneticAlgorithm(edges, 100, 30)

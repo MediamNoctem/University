@@ -7,47 +7,41 @@ from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
 from PyQt5.QtCore import QTimer
 import networkx as nx
+from functools import partial
 import Darwin_model, de_Vries_model
 
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         QtWidgets.QMainWindow.__init__(self)
+        self.condition_met = None
+        self.timer = None
         uic.loadUi("form.ui", self)
 
-        self.label_8.hide()
-        self.lineEdit_6.hide()
+        self.label_7.hide()
+        self.lineEdit_4.hide()
 
         self.comboBox_1.activated.connect(self.on_selected)
         self.pushButton_1.clicked.connect(self.button1_clicked)
+        self.pushButton_2.clicked.connect(self.button2_clicked)
 
         self.figure = Figure()
         self.canvas = FigureCanvas(self.figure)
         self.ax = None
 
+        self.edges = None
+        self.nodes = None
+        self.matching = None
+
     def on_selected(self):
         if self.comboBox_1.currentIndex() == 0:
-            self.label_8.hide()
-            self.lineEdit_6.hide()
-            self.lineEdit_1.setText("")
-            self.lineEdit_2.setText("")
-            self.textEdit_1.setText("")
-            self.lineEdit_3.setText("")
-            self.lineEdit_4.setText("")
-            self.lineEdit_5.setText("")
-            self.lineEdit_7.setText("")
+            self.label_7.hide()
+            self.lineEdit_4.hide()
         else:
             if self.comboBox_1.currentIndex() == 1:
-                self.label_8.setVisible(1)
-                self.lineEdit_6.setVisible(1)
-                self.lineEdit_1.setText("")
-                self.lineEdit_2.setText("")
-                self.textEdit_1.setText("")
-                self.lineEdit_3.setText("")
-                self.lineEdit_4.setText("")
-                self.lineEdit_5.setText("")
-                self.lineEdit_6.setText("")
-                self.lineEdit_7.setText("")
+                self.label_7.setVisible(1)
+                self.lineEdit_4.setVisible(1)
+
     #     #
     #     #     else:
     #     #         if self.comboBox.currentIndex() == 2:
@@ -83,47 +77,67 @@ class MainWindow(QtWidgets.QMainWindow):
     #     #             self.resize(894, 897)
 
     def button1_clicked(self):
+        self.figure.clear()
+        self.lineEdit_5.setText('')
+
         if self.comboBox_1.currentIndex() == 0:
-            num_nodes = int(self.lineEdit_1.text())
-            num_edges = int(self.lineEdit_2.text())
+            self.nodes = to_list_nodes(self.textEdit_1.toPlainText())
+            self.edges = to_list_edges(self.textEdit_2.toPlainText())
 
-            # Реализовать перевод строки в список ребер
-            edges = self.textEdit_1.text()
+            num_population = int(self.lineEdit_1.text())
+            probability = float(self.lineEdit_2.text())
+            iterations = int(self.lineEdit_3.text())
 
-            num_population = int(self.lineEdit_3.text())
-            probability = float(self.lineEdit_4.text())
-            iterations = int(self.lineEdit_5.text())
-            ga = Darwin_model.GeneticAlgorithm(edges, num_population, probability)
+            ga = Darwin_model.GeneticAlgorithm(self.edges, num_population, probability)
             ga.generation_initial_population()
 
-            self.timer = QTimer()
-            self.timer.setInterval(10)
-            self.condition_met = False
-            k = 0
-            self.timer.timeout.connect(self.update_graph(ga, k, iterations))
-            self.timer.start()
+            G = nx.Graph()
+            G.add_nodes_from(self.nodes)
+            G.add_edges_from(self.edges)
+            ax = self.figure.add_subplot(111)
+            pos = nx.spring_layout(G, seed=33)
+            self.matching = ga.search_matching(iterations)
+            colors = colorize_matching(self.matching, self.edges)
+            # 18c94a
+            nx.draw(G, pos=pos, ax=ax, with_labels=True, node_color='#bdbdbd', edge_color=colors, width=5,
+                    node_size=800)
 
-            layout = QVBoxLayout()
-            self.groupBox_2.setLayout(layout)
-            layout.addWidget(self.canvas)
-        # else:
-        #     if self.comboBox.currentIndex() == 1:
-        #         self.lineEdit_2.setText("")
-        #         self.lineEdit_3.setText("")
-        #         self.lineEdit_4.setText("")
-        #         a = float(self.lineEdit_5.text())
-        #         b = float(self.lineEdit_6.text())
-        #         min_values = np.array([a] * 2)
-        #         max_values = np.array([b] * 2)
-        #         swarm_size = int(self.lineEdit_7.text())
-        #         current_velocity_ratio = float(self.lineEdit_8.text())
-        #         local_velocity_ratio = float(self.lineEdit_9.text())
-        #         global_velocity_ratio = float(self.lineEdit_10.text())
-        #         iterations = int(self.lineEdit_11.text())
-        #         ps = lab4.ParticleSwarmMethod()
-        #         matching = ps.particle_swarm_method(swarm_size, min_values, max_values, current_velocity_ratio,
-        #                                        local_velocity_ratio, global_velocity_ratio, iterations)
-        #         self.f = self.f.sphere
+            self.canvas.draw()
+            self.canvas.update()
+
+            # self.timer = QTimer()
+            # self.timer.setInterval(100)
+            # self.condition_met = False
+            # k = 0
+            # # (ga, k, iterations)
+            # self.timer.timeout.connect(partial(self.update_graph, ga, k, iterations))
+            # self.timer.start()
+
+        else:
+            if self.comboBox_1.currentIndex() == 1:
+                self.nodes = to_list_nodes(self.textEdit_1.toPlainText())
+                self.edges = to_list_edges(self.textEdit_2.toPlainText())
+
+                num_population = int(self.lineEdit_1.text())
+                probability = float(self.lineEdit_2.text())
+                iterations = int(self.lineEdit_3.text())
+                frequency_disasters = int(self.lineEdit_4.text())
+
+                ga = de_Vries_model.GeneticAlgorithm(self.edges, num_population, probability, frequency_disasters)
+                ga.generation_initial_population()
+
+                G = nx.Graph()
+                G.add_nodes_from(self.nodes)
+                G.add_edges_from(self.edges)
+                ax = self.figure.add_subplot(111)
+                pos = nx.spring_layout(G, seed=33)
+                self.matching = ga.search_matching(iterations)
+                colors = colorize_matching(self.matching, self.edges)
+                nx.draw(G, pos=pos, ax=ax, with_labels=True, node_color='#bdbdbd', edge_color=colors, width=5,
+                        node_size=800)
+
+                self.canvas.draw()
+                self.canvas.update()
         #     else:
         #         if self.comboBox.currentIndex() == 2:
         #             self.lineEdit_2.setText("")
@@ -143,25 +157,98 @@ class MainWindow(QtWidgets.QMainWindow):
         #                                                   size_population_of_antigens, nb, nd, nc,
         #                                                   iterations, 0.4, 0.4)
 
-    def update_graph(self, ga, k, iterations):
-        k += 1
-        self.figure.clf()
-        G = nx.Graph()
-        nodes = [1, 2, 3, 4, 5, 6]
-        G.add_nodes_from(nodes)
-        edges = [[1, 2], [1, 6], [2, 3], [2, 6], [3, 4], [3, 5], [5, 6]]
-        G.add_edges_from(edges)
-        ax = self.figure.add_subplot(111)
-        pos = nx.spring_layout(G, seed=33)
-        matching = ga.next_iteration()
-        nx.draw(G, pos, ax)
+        layout = QVBoxLayout()
+        self.groupBox_2.setLayout(layout)
+        layout.addWidget(self.canvas)
 
-        if k == iterations:
-            self.condition_met = True
-            self.timer.stop()
+        self.lineEdit_5.setText(str(self.matching).replace('\'', ''))
 
-        self.canvas.draw()
-        # self.canvas.update()
+    # def update_graph(self, ga, k, iterations):
+    #     k += 1
+    #     self.figure.clf()
+    #     G = nx.Graph()
+    #     G.add_nodes_from(self.nodes)
+    #     G.add_edges_from(self.edges)
+    #     ax = self.figure.add_subplot(111)
+    #     pos = nx.spring_layout(G, seed=33)
+    #     self.matching = ga.next_iteration()
+    #     colors = colorize_matching(self.matching, self.edges)
+    #     nx.draw(G, pos=pos, ax=ax, with_labels=True, node_color='#18c94a', edge_color=colors)
+    #     if k == iterations:
+    #         self.condition_met = True
+    #         self.timer.stop()
+    #
+    #     self.canvas.draw()
+    #     self.canvas.update()
+    def button2_clicked(self):
+        self.figure.clear()
+        self.lineEdit_1.setText("")
+        self.lineEdit_2.setText("")
+        self.textEdit_1.setText("")
+        self.textEdit_2.setText("")
+        self.lineEdit_3.setText("")
+        self.lineEdit_4.setText("")
+        self.lineEdit_5.setText("")
+
+def to_list_edges(edges_string):
+    edges_list = []
+    if (edges_string[0] == '[') and (edges_string[-1] == ']'):
+        edges_string = edges_string[1:-1]
+
+        count_1 = edges_string.count('[')
+        count_2 = edges_string.count(']')
+
+        if count_1 == count_2:
+            while edges_string:
+                index_1 = edges_string.find('[')
+                index_2 = edges_string.find(']')
+
+                if (index_1 > -1) and (index_2 > -1):
+                    edge_string = edges_string[(index_1 + 1): index_2]
+
+                    separator = None
+                    if edge_string.find(', ') > -1:
+                        separator = ', '
+                    else:
+                        if edge_string.find(','):
+                            separator = ','
+                    edges_list.append(edge_string.split(separator))
+
+                edges_string = edges_string[(index_2 + 1):]
+    return edges_list
+
+
+def to_list_nodes(nodes_string):
+    nodes_list = []
+    if (nodes_string[0] == '[') and (nodes_string[-1] == ']'):
+        nodes_string = nodes_string[1:-1]
+        separator = None
+        if nodes_string.find(', ') > -1:
+            separator = ', '
+        else:
+            if nodes_string.find(','):
+                separator = ','
+        nodes_list = nodes_string.split(separator)
+    return nodes_list
+
+
+# def get_nodes_from_list_edges(edges):
+#     nodes = []
+#     for e in edges:
+#         for i in range(len(e)):
+#             if e[i] not in nodes:
+#                 nodes.append(e[i])
+#     return nodes
+
+
+def colorize_matching(matching, edges):
+    colors = []
+    for i in range(len(edges)):
+        if edges[i] in matching:
+            colors.append('red')
+        else:
+            colors.append('black')
+    return colors
 
 
 if __name__ == '__main__':

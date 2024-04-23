@@ -122,7 +122,7 @@ class GeneticAlgorithm:
                 self.population.chromosomes.append(j)
             self.selection()
 
-        return self.population.chromosomes[0].value
+        return vector_into_edges(self.population.chromosomes[0].value, self.edges)
 
     @staticmethod
     def Hoare_sorting(function_values, population):
@@ -182,6 +182,14 @@ def is_matching(list_edges, matching):
             else:
                 return False
     return True
+
+
+def vector_into_edges(vector, edges):
+    edges_list = []
+    for i in range(len(vector)):
+        if vector[i]:
+            edges_list.append(edges[i])
+    return edges_list
 
 
 # edges = [[1, 7], [1, 8], [2, 8], [3, 5], [3, 6], [3, 7], [4, 6]]
