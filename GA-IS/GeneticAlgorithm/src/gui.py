@@ -3,11 +3,8 @@ from PyQt5 import uic
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import *
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
-from PyQt5.QtCore import QTimer
 import networkx as nx
-from functools import partial
 import Darwin_model, de_Vries_model
 
 
@@ -42,40 +39,6 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.label_7.setVisible(1)
                 self.lineEdit_4.setVisible(1)
 
-    #     #
-    #     #     else:
-    #     #         if self.comboBox.currentIndex() == 2:
-    #     #             self.label_6.setVisible(1)
-    #     #             self.label_7.setVisible(1)
-    #     #             self.label_8.setVisible(1)
-    #     #
-    #     #             self.lineEdit_5.setVisible(1)
-    #     #             self.lineEdit_6.setVisible(1)
-    #     #             self.lineEdit.setText("f = (1 - x)^2 + 100*(y - x^2)^2")
-    #     #             self.label_9.setText("Размер начальной\nпопуляции антител:")
-    #     #             self.label_10.setText("Размер начальной\nпопуляции антигенов:")
-    #     #             self.label_11.setText("Количество антител\nдля мутации:")
-    #     #             self.label_12.setText("Количество оставляемых\nклонов:")
-    #     #             self.label_13.setText("Количество клонов\nклонируемого антитела:")
-    #     #             self.label_14.setText("Количество итераций:")
-    #     #
-    #     #             self.label_12.setVisible(1)
-    #     #             self.lineEdit_10.setVisible(1)
-    #     #             self.lineEdit_11.setVisible(1)
-    #     #             self.lineEdit_12.setVisible(1)
-    #     #             self.label_13.setVisible(1)
-    #     #             self.label_14.setVisible(1)
-    #     #
-    #     #             self.lineEdit_5.setText("")
-    #     #             self.lineEdit_6.setText("")
-    #     #             self.lineEdit_7.setText("")
-    #     #             self.lineEdit_8.setText("")
-    #     #             self.lineEdit_9.setText("")
-    #     #             self.lineEdit_10.setText("")
-    #     #             self.lineEdit_11.setText("")
-    #     #             self.lineEdit_12.setText("")
-    #     #             self.resize(894, 897)
-
     def button1_clicked(self):
         self.figure.clear()
         self.lineEdit_5.setText('')
@@ -102,17 +65,6 @@ class MainWindow(QtWidgets.QMainWindow):
             nx.draw(G, pos=pos, ax=ax, with_labels=True, node_color='#bdbdbd', edge_color=colors, width=5,
                     node_size=800)
 
-            self.canvas.draw()
-            self.canvas.update()
-
-            # self.timer = QTimer()
-            # self.timer.setInterval(100)
-            # self.condition_met = False
-            # k = 0
-            # # (ga, k, iterations)
-            # self.timer.timeout.connect(partial(self.update_graph, ga, k, iterations))
-            # self.timer.start()
-
         else:
             if self.comboBox_1.currentIndex() == 1:
                 self.nodes = to_list_nodes(self.textEdit_1.toPlainText())
@@ -130,56 +82,21 @@ class MainWindow(QtWidgets.QMainWindow):
                 G.add_nodes_from(self.nodes)
                 G.add_edges_from(self.edges)
                 ax = self.figure.add_subplot(111)
-                pos = nx.spring_layout(G, seed=33)
+                pos = nx.spring_layout(G, seed=123456)
                 self.matching = ga.search_matching(iterations)
                 colors = colorize_matching(self.matching, self.edges)
                 nx.draw(G, pos=pos, ax=ax, with_labels=True, node_color='#bdbdbd', edge_color=colors, width=5,
                         node_size=800)
-
-                self.canvas.draw()
-                self.canvas.update()
-        #     else:
-        #         if self.comboBox.currentIndex() == 2:
-        #             self.lineEdit_2.setText("")
-        #             self.lineEdit_3.setText("")
-        #             self.lineEdit_4.setText("")
-        #             self.f = self.f.Rosenbrok
-        #             a = float(self.lineEdit_5.text())
-        #             b = float(self.lineEdit_6.text())
-        #             size_population_of_antibodies = int(self.lineEdit_7.text())
-        #             size_population_of_antigens = int(self.lineEdit_8.text())
-        #             nb = int(self.lineEdit_9.text())
-        #             nd = int(self.lineEdit_10.text())
-        #             nc = int(self.lineEdit_11.text())
-        #             iterations = int(self.lineEdit_12.text())
-        #             immnet = lab6.ImmuneNetworkAlgorithm(self.f)
-        #             matching = immnet.immune_network_algorithm(a, b, size_population_of_antibodies,
-        #                                                   size_population_of_antigens, nb, nd, nc,
-        #                                                   iterations, 0.4, 0.4)
-
+       
         layout = QVBoxLayout()
         self.groupBox_2.setLayout(layout)
         layout.addWidget(self.canvas)
 
+        self.canvas.draw()
+        self.canvas.update()
+
         self.lineEdit_5.setText(str(self.matching).replace('\'', ''))
 
-    # def update_graph(self, ga, k, iterations):
-    #     k += 1
-    #     self.figure.clf()
-    #     G = nx.Graph()
-    #     G.add_nodes_from(self.nodes)
-    #     G.add_edges_from(self.edges)
-    #     ax = self.figure.add_subplot(111)
-    #     pos = nx.spring_layout(G, seed=33)
-    #     self.matching = ga.next_iteration()
-    #     colors = colorize_matching(self.matching, self.edges)
-    #     nx.draw(G, pos=pos, ax=ax, with_labels=True, node_color='#18c94a', edge_color=colors)
-    #     if k == iterations:
-    #         self.condition_met = True
-    #         self.timer.stop()
-    #
-    #     self.canvas.draw()
-    #     self.canvas.update()
     def button2_clicked(self):
         self.figure.clear()
         self.lineEdit_1.setText("")
@@ -189,6 +106,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.lineEdit_3.setText("")
         self.lineEdit_4.setText("")
         self.lineEdit_5.setText("")
+
 
 def to_list_edges(edges_string):
     edges_list = []
@@ -230,15 +148,6 @@ def to_list_nodes(nodes_string):
                 separator = ','
         nodes_list = nodes_string.split(separator)
     return nodes_list
-
-
-# def get_nodes_from_list_edges(edges):
-#     nodes = []
-#     for e in edges:
-#         for i in range(len(e)):
-#             if e[i] not in nodes:
-#                 nodes.append(e[i])
-#     return nodes
 
 
 def colorize_matching(matching, edges):
