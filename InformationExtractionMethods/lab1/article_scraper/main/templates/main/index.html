@@ -5,30 +5,41 @@
     <title>Статьи</title>
 </head>
 <body>
+    {% load bootstrap4 %}
+    {% bootstrap_css %}
     {% if articles %}
         {% for article in articles %}
-            <div>
-                <p>
-                    <b>Заголовок: </b>
-                    {{ article.title }}
-                </p>
-                <p>
-                    <b>Автор: </b>
-                    {{ article.author }}
-                </p>
-                <p>
-                    <b>Аннотация: </b>
-                    {{ article.abstract }}
-                </p>
-                <p>
-                    <b>Текст статьи: </b>
+            <div class="container">
+                <div class="row">
                     <br>
-                    {{ article.text }}
-                </p>
-                <p>
-                    <b>Ссылка на источник: </b>
-                    {{ article.link }}
-                </p>
+                    <br>
+                    <br>
+                    <div class="card">
+                    <div class="card-body">
+                        <p>
+                            <b>Заголовок: </b>
+                            {{ article.title }}
+                        </p>
+                        <p>
+                            <b>Автор: </b>
+                            {{ article.author }}
+                        </p>
+                        <p>
+                            <b>Аннотация: </b>
+                            {{ article.abstract }}
+                        </p>
+                        <p>
+                            <b>Текст статьи: </b>
+                            <br>
+                            {{ article.text }}
+                        </p>
+                        <p>
+                            <b>Ссылка на источник: </b>
+                            {{ article.link }}
+                        </p>
+                    </div>
+                    </div>
+                </div>
             </div>
         {% endfor %}
     {% else %}

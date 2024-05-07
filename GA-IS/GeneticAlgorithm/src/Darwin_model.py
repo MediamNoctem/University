@@ -11,6 +11,12 @@ class Population:
     def __init__(self):
         self.chromosomes = None
 
+    def print(self):
+        s = ""
+        for i in self.chromosomes:
+            s += str(i.value) + "  "
+        print(s)
+
 
 class GeneticAlgorithm:
     def __init__(self, edges, number_generations, percent_of_best_ones_to_live):
@@ -99,16 +105,6 @@ class GeneticAlgorithm:
             self.selection()
 
         return vector_into_edges(self.population.chromosomes[0].value, self.edges)
-
-    # def next_iteration(self):
-    #     self.population.chromosomes = self.get_best_members()
-    #     self.crossing_over()
-    #     self.mutate()
-    #     for j in self.descendants:
-    #         self.population.chromosomes.append(j)
-    #     self.selection()
-    #
-    #     return vector_into_edges(self.population.chromosomes[0].value, self.edges)
 
     @staticmethod
     def Hoare_sorting(function_values, population):

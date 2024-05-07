@@ -87,7 +87,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 colors = colorize_matching(self.matching, self.edges)
                 nx.draw(G, pos=pos, ax=ax, with_labels=True, node_color='#bdbdbd', edge_color=colors, width=5,
                         node_size=800)
-       
+
         layout = QVBoxLayout()
         self.groupBox_2.setLayout(layout)
         layout.addWidget(self.canvas)

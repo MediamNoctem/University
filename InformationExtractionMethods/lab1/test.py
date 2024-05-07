@@ -1,45 +1,62 @@
 from bs4 import BeautifulSoup
 import requests
-import httpx
+from time import sleep
 
 
-def parser_articles(url):
-    # try:
+def get_links_to_pages_cyberleninka(list_query):
+    links = set()
+
+    for q in list_query:
+        response = requests.post(url='https://cyberleninka.ru/api/search', json={
+            'mode': 'articles', 'q': q, 'size': 100, 'from': 0,
+        })
+        results = response.json()
+
+        num_articles = len(results['articles'])
+
+        for i in range(num_articles):
+            links.add('https://cyberleninka.ru' + str(results['articles'][i]['link']))
+
+    return list(links)
+
+
+def web_page_parser_cyberleninka(url):
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
-    print(type(soup))
+    title = soup.find('meta', {'name': 'citation_title'})['content']
+    authors = soup.find_all('meta', {'name': 'citation_author'})
+    author = ''
 
-    title = soup.find('h1', {'class': 'tp-post-single-header__title'}).get_text()
-    print(title)
-    author = soup.find('a', {'class': 'tp-author__link'}).get_text()
-    print(author)
-    abstract = soup.find('p', {'class': 'tp-post-single-header__exert'}).get_text()
-    print(abstract)
-    text = soup.find('div', {'class': 'tp-content-viewer'}).get_text()
-    print(text)
-    link = soup.find('link', {'rel': 'canonical'})['href']
-    print(link)
+    for a in authors:
+        author += str(a['content']) + ', '
 
+    author = author[:-2]
+    abstract = soup.find('meta', {'name': 'description'})['content']
+    text = soup.find('div', {'class': 'ocr'}).get_text()
+    link = url
 
-def take_links(urls):
-    links = []
-    for url in urls:
-        response = requests.get(url)
-        soup = BeautifulSoup(response.text, 'html.parser')
-        print(soup)
-        articles = soup.find('ul', {'id': 'search-results'})
-        # print(articles.text)
-        for article in articles:
-            # print(article.get('href'))
-            links.append(article.get('href'))
-        # print(links)
-    return links
+    return {
+        'title': title,
+        'author': author,
+        'abstract': abstract,
+        'text': text,
+        'link': link
+    }
 
 
-def start(url):
-    urls = [url + str(page) for page in range(1, 2)]
+def parser_cyberleninka(list_query):
+    links = get_links_to_pages_cyberleninka(list_query)
+    articles = []
+    time = 5
+    for url in links:
+        try:
+            articles.append(web_page_parser_cyberleninka(url))
+        except:
+            sleep(time)
+            time += 1
+    return articles
 
-    articles_urls = take_links(urls)
 
-
-start('https://cyberleninka.ru/search?q=криптоанализ&page=')
+list_query = ['биоинспирированные алгоритмы методы', 'криптоанализ', 'биоинспирированные алгоритмы методы криптоанализ']
+list_articles = parser_cyberleninka(list_query)
+print(list_articles)

@@ -1,0 +1,33 @@
+import networkx as nx
+import Darwin_model, de_Vries_model
+import matplotlib.pyplot as plt
+
+max_len_matching_D = []
+max_len_matching_V = []
+num_iterations = []
+
+num_nodes = 10
+num_edges = 35
+G = nx.gnm_random_graph(num_nodes, num_edges)
+ga_D = Darwin_model.GeneticAlgorithm(list(G.edges), 500, 30)
+ga_V = de_Vries_model.GeneticAlgorithm(list(G.edges), 500, 30, 200)
+
+for iteration in range(10, 200, 50):
+    print(iteration)
+    matching_D = ga_D.search_matching(iteration)
+    matching_V = ga_V.search_matching(iteration)
+
+    max_len_matching_D.append(len(matching_D))
+    max_len_matching_V.append(len(matching_V))
+    num_iterations.append(iteration)
+
+fig, ax = plt.subplots()
+ax.plot(num_iterations, max_len_matching_D, label="Модель Дарвина", color="#8CCB5E")
+ax.plot(num_iterations, max_len_matching_V, label="Модель де Фриза", color="#9966CC")
+
+plt.legend(loc="upper left")
+
+ax.set_title("График зависимости мощности наибольшего паросочетания от количества итераций")
+ax.set_xlabel("Количество итераций")
+ax.set_ylabel("Мощность наибольшего паросочетания")
+plt.show()
