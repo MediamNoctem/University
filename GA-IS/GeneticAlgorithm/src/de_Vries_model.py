@@ -1,6 +1,6 @@
 import random
 import numpy as np
-
+import time
 
 class Chromosome:
     def __init__(self, value):
@@ -199,3 +199,18 @@ def vector_into_edges(vector, edges):
 # matching = ga.search_matching(200)
 # print(matching)
 # print(is_matching(edges, matching))
+
+edges = [[1, 2], [1, 3], [2, 3], [2, 7], [2, 8], [3, 4], [3, 5], [4, 5], [5, 6], [5, 8], [6, 7], [6, 8], [6, 9], [7, 8], [7, 9]]
+num_gen = 100
+p = 60
+num_iterations = 200
+f = 30
+# [[1, 7], [1, 8], [2, 8], [3, 5], [3, 6], [3, 7], [4, 6]]
+# [[1, 2], [1, 6], [2, 3], [2, 6], [3, 4], [3, 5], [5, 6]]
+start_time = time.time()
+ga = GeneticAlgorithm(edges, num_gen, p, f)
+matching = ga.search_matching(num_iterations)
+end_time = time.time()
+time_elapsed = end_time - start_time
+print(matching)
+print(time_elapsed)

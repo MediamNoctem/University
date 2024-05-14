@@ -4,10 +4,11 @@ from bs4 import BeautifulSoup
 import requests
 from time import sleep
 
-list_query = ['биоинспирированные алгоритмы методы', 'криптоанализ', 'биоинспирированные алгоритмы методы криптоанализ']
+list_query = ['биоинспирированные алгоритмы методы криптоанализ', 'биоинспирированные алгоритмы методы', 'криптоанализ', 'философия']
+
 
 def index(request):
-    # Article.objects.all().delete()
+    Article.objects.all().delete()
     list_articles = parser_cyberleninka(list_query)
     add_articles_to_db(list_articles)
     articles = Article.objects.all()
@@ -58,7 +59,7 @@ def get_links_to_pages_cyberleninka(list_query):
 
     for q in list_query:
         response = requests.post(url='https://cyberleninka.ru/api/search', json={
-            'mode': 'articles', 'q': q, 'size': 100, 'from': 0,
+            'mode': 'articles', 'q': q, 'size': 100, 'from': 0
         })
         results = response.json()
 
@@ -66,6 +67,8 @@ def get_links_to_pages_cyberleninka(list_query):
 
         for i in range(num_articles):
             links.add('https://cyberleninka.ru' + str(results['articles'][i]['link']))
+            print('https://cyberleninka.ru' + str(results['articles'][i]['link']))
+        print(links)
 
     return list(links)
 
@@ -84,6 +87,15 @@ def web_page_parser_cyberleninka(url):
     abstract = soup.find('meta', {'name': 'description'})['content']
     text = soup.find('div', {'class': 'ocr'}).get_text()
     link = url
+
+    print({
+        'title': title,
+        'author': author,
+        'abstract': abstract,
+        'text': text,
+        'link': link
+    })
+
 
     return {
         'title': title,
@@ -108,12 +120,6 @@ def parser_cyberleninka(list_query):
 
 
 def add_articles_to_db(articles):
-    # conn = sqlite3.connect('db.sqlite3')
-    # c = conn.cursor()
-    # c.execute('''INSERT INTO articles (title, author, abstract, text, link) VALUES (, ?, ?, ?, ?, ?)''')
-    #
-    # conn.commit()
-    # conn.close()
     for a in articles:
         article = Article(title=a['title'], author=a['author'], abstract=a['abstract'], text=a['text'], link=a['link'])
         article.save()
