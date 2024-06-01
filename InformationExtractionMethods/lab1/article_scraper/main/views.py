@@ -1,58 +1,25 @@
 from django.shortcuts import render
+from django.db import connection
 from .models import Article
 from bs4 import BeautifulSoup
 import requests
 from time import sleep
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+from sklearn.naive_bayes import ComplementNB
+from sklearn.feature_extraction.text import TfidfVectorizer
 
-list_query = ['биоинспирированные алгоритмы методы криптоанализ', 'биоинспирированные алгоритмы методы', 'криптоанализ', 'философия']
+list_query = ['биоинспирированные алгоритмы методы криптоанализ']
 
 
 def index(request):
-    Article.objects.all().delete()
-    list_articles = parser_cyberleninka(list_query)
-    add_articles_to_db(list_articles)
+    # Article.objects.all().delete()
+    # list_articles = parser_cyberleninka(list_query)
+    # add_articles_to_db(list_articles)
     articles = Article.objects.all()
+    NB_classifier()
     return render(request, 'main/index.html', {'articles': articles})
 
-
-# def parser_articles(url):
-#     try:
-#         response = requests.get(url)
-#         soup = BeautifulSoup(response.text, 'html.parser')
-#
-#         title = soup.find('h1', {'class': 'tp-post-single-header__title'}).get_text()
-#         author = soup.find('a', {'class': 'tp-author__link'}).get_text()
-#         abstract = soup.find('p', {'class': 'tp-post-single-header__exert'}).get_text()
-#         text = soup.find('div', {'class': 'tp-content-viewer'}).get_text()
-#         link = soup.find('link', {'rel': 'canonical'})['href']
-#
-#         return {
-#             'title': title,
-#             'author': author,
-#             'abstract': abstract,
-#             'text': text,
-#             'link': link
-#         }
-#     except Exception as e:
-#         print("Ошибка: ", e)
-#
-#
-# # https://tproger.ru/search?searchid=2415386&text=криптография&web=0
-# def take_links(urls):
-#     href = []
-#     for url in urls:
-#         response = requests.get(url)
-#         soup = BeautifulSoup(response.text, 'html.parser')
-#         articles = soup.find_all('a', {'class': 'b-serp-item__title-link'})
-#         for article in articles:
-#             href.append('https://habr.com' + article.get('href'))
-#     return href
-#
-#
-# def start(url):
-#     urls = [url + '#p=' + str(page) for page in range(1, 10)]
-#
-#     articles_urls = take_links(urls)
 
 def get_links_to_pages_cyberleninka(list_query):
     links = set()
@@ -67,8 +34,6 @@ def get_links_to_pages_cyberleninka(list_query):
 
         for i in range(num_articles):
             links.add('https://cyberleninka.ru' + str(results['articles'][i]['link']))
-            print('https://cyberleninka.ru' + str(results['articles'][i]['link']))
-        print(links)
 
     return list(links)
 
@@ -87,15 +52,6 @@ def web_page_parser_cyberleninka(url):
     abstract = soup.find('meta', {'name': 'description'})['content']
     text = soup.find('div', {'class': 'ocr'}).get_text()
     link = url
-
-    print({
-        'title': title,
-        'author': author,
-        'abstract': abstract,
-        'text': text,
-        'link': link
-    })
-
 
     return {
         'title': title,
@@ -123,3 +79,29 @@ def add_articles_to_db(articles):
     for a in articles:
         article = Article(title=a['title'], author=a['author'], abstract=a['abstract'], text=a['text'], link=a['link'])
         article.save()
+
+
+def NB_classifier():
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM main_article")
+        data = cursor.fetchall()
+
+    x = [column[4] for column in data]
+    y = [column[-1] for column in data]
+
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
+    # x_train = np.array(x_train)
+
+    vectorizer = TfidfVectorizer()
+
+    x_train_vectorized = vectorizer.fit_transform(x_train)
+    x_test_vectorized = vectorizer.transform(x_test)
+
+    classifier = ComplementNB()
+
+    classifier.fit(x_train_vectorized, y_train)
+
+    y_pred = classifier.predict(x_test_vectorized)
+
+    accuracy = accuracy_score(y_test, y_pred)
+    print("Точность: {:.2f}%".format(accuracy * 100))
