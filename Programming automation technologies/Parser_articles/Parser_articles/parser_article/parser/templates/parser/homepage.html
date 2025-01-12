@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Исследователь статей</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&amp;subset=cyrillic,cyrillic-ext,latin-ext" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400,500,600,700" rel="stylesheet">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <div class="container"></div>
+        </header>
+        <div class="wrapper">
+            <div class="page-background-2"></div>
+            <div class="page-background-1"></div>
+            <div class="wrap">
+                <div class="search">
+                    <div class="title">
+                        <h1>Поиск статей</h1>
+                    </div>
+                    <div class="search-line">
+                        <form id="form-search" method="post" action="send/to/server">
+                            <input id="input-text" name="search-input" type="text">
+                            <button id="send" class="search-button">
+                                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M21.3601 23.48C18.9488 25.3516 15.9149 26.234 12.876 25.9476C9.83702 25.6611 7.02146 24.2274 5.00239 21.9381C2.98332 19.6489 1.91252 16.6763 2.00795 13.6254C2.10338 10.5745 3.35787 7.67456 5.51606 5.516C7.67463 3.3578 10.5745 2.10332 13.6254 2.00789C16.6763 1.91246 19.649 2.98326 21.9382 5.00233C24.2274 7.0214 25.6612 9.83696 25.9476 12.8759C26.2341 15.9148 25.3517 18.9487 23.4801 21.36L29.5601 27.44C29.7575 27.6233 29.9018 27.8565 29.9779 28.115C30.0539 28.3735 30.0588 28.6478 29.9921 28.9088C29.9253 29.1699 29.7894 29.4081 29.5986 29.5983C29.4078 29.7886 29.1693 29.9239 28.9081 29.99C28.6473 30.0568 28.3734 30.0522 28.115 29.9765C27.8567 29.9008 27.6235 29.757 27.4401 29.56L21.3601 23.48ZM23.0001 14C23.0178 12.8072 22.7983 11.6228 22.3541 10.5156C21.9099 9.40848 21.2501 8.4007 20.4129 7.55091C19.5756 6.70112 18.5778 6.02629 17.4774 5.56567C16.377 5.10506 15.196 4.86785 14.0031 4.86785C12.8101 4.86785 11.6291 5.10506 10.5287 5.56567C9.4283 6.02629 8.43047 6.70112 7.59326 7.55091C6.75604 8.4007 6.09617 9.40848 5.65201 10.5156C5.20785 11.6228 4.98827 12.8072 5.00606 14C5.04129 16.3629 6.00468 18.6171 7.68812 20.2757C9.37155 21.9342 11.6399 22.8639 14.0031 22.8639C16.3662 22.8639 18.6346 21.9342 20.318 20.2757C22.0014 18.6171 22.9648 16.3629 23.0001 14Z" fill="black"/>
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="footer"></footer>
+    </div>
+</body>
+</html>

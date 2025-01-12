@@ -1,0 +1,113 @@
+body {
+    font-family: "Lora", serif;
+    font-size: 16px;
+    line-height: 1.4;
+    color: #222;
+}
+.wrapper {
+    max-width: 1100px;
+    margin: 20px auto;
+}
+.wrap {
+    min-height: 300px;
+    border: 2px solid #111;
+    padding: 50px;
+    background-color: #fff;
+}
+.page-background-1 {
+    position: relative;
+    top: 2px;
+    width: 95%;
+    height: 15px;
+    border: 2px solid #111;
+    margin: 0 auto;
+}
+.page-background-2 {
+    position: relative;
+    top: 3px;
+    width: 90%;
+    height: 15px;
+    border: 2px solid #111;
+    margin: 0 auto;
+}
+.title {
+    padding: 10px 0;
+    text-align: center;
+    margin: 0 0 0 0;
+}
+h1 {
+    font-size: 50px;
+    font-weight: 900;
+    line-height: 1.3;
+    letter-spacing: 2px;
+    text-align: center;
+    margin: 0;
+    padding: 10px 0;
+    font-family: "Oswald", serif;
+    color: #111;
+    border-bottom: 3px solid #111;
+    display: inline-block;
+}
+.meta {
+    text-align: center;
+    margin-bottom: 50px;
+}
+.post-meta {
+    font-size: 12px;
+    text-transform: uppercase;
+    font-family: "Oswald", serif;
+}
+.post-meta em {
+    margin: 0 6px;
+    text-transform: none;
+    font-style: normal;
+}
+.article {
+    columns: 3;
+    column-gap: 30px;
+    text-align: justify;
+}
+.article-bottom {
+    border-top: 5px solid #111;
+    margin: 50px 0;
+}
+p {
+    margin: 0 0 20px 0;
+}
+.search {
+    padding: 170px 0;
+}
+.search-line {
+    margin: 40px auto 20px auto;
+}
+.search-line, form {
+    width: 532px;
+    display: flex;
+    align-items: center;
+}
+.search-button {
+    margin-left: 10px;
+    height: 32px;
+    border: none;
+    padding: 0;
+    background: none;
+    position: absolute;
+    z-index: 1;
+    pointer-events: none;
+}
+input {
+    width: 532px;
+    padding: 10px 10px 10px 55px;
+    font-size: 16px;
+    font-family: "Lora", serif;
+    border: 2px solid #111;
+}
+button {
+    padding: 10px 20px;
+    font-family: "Lora", serif;
+    font-size: 16px;
+    color: white;
+    background: #111;
+    border: 2px solid #111;
+    border-radius: 4px;
+}

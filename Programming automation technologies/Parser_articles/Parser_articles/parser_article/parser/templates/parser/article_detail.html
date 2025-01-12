@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Исследователь статей</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&amp;subset=cyrillic,cyrillic-ext,latin-ext" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400,500,600,700" rel="stylesheet">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <div class="container"></div>
+        </header>
+        <div class="wrapper">
+            <div class="page-background-2"></div>
+            <div class="page-background-1"></div>
+            <div class="wrap">
+                {% load static %}
+                {% if article %}
+                    <div class="title">
+                        <h1>{{ article.title }}</h1>
+                    </div>
+                    <div class="meta">
+                        <div class="post-meta">
+                            <span class="post-date">
+                                {{ article.date }}
+                            </span>
+                            <em>/</em>
+                            <span class="post-author">
+                                {{ article.authors }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="article">
+                        {% for paragraph in article.text %}
+                            {% if paragraph.title %}
+                                <h4>
+                                    {{ paragraph.title }}
+                                </h4>
+                            {% endif %}
+                            {% if paragraph.text %}
+                                <p>
+                                    {{ paragraph.text }}
+                                </p>
+                            {% endif %}
+                        </div>
+                {% else %}
+                    <p>Такой статьи не существует.</p>
+                {% endif %}
+            </div>
+        </div>
+        <footer class="footer"></footer>
+    </div>
+</body>
+</html>

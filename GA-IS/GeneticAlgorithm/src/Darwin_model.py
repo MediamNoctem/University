@@ -1,6 +1,9 @@
 import random
 import numpy as np
-import time
+import matplotlib.pyplot as plt
+
+
+vals = []
 
 class Chromosome:
     def __init__(self, value):
@@ -43,6 +46,7 @@ class GeneticAlgorithm:
 
     def sort(self):
         list_cardinality_matching = []
+
         for k in self.population.chromosomes:
             list_cardinality_matching.append(calc_cardinality_matching(self.edges, k.value))
 
@@ -103,6 +107,12 @@ class GeneticAlgorithm:
             for j in self.descendants:
                 self.population.chromosomes.append(j)
             self.selection()
+            len_matching = []
+            list_cardinality_matching = []
+            for c in self.population.chromosomes:
+                list_cardinality_matching.append(calc_cardinality_matching(self.edges, c.value))
+                len_matching.append(list_cardinality_matching[-1])
+            vals.append(len_matching)
 
         return vector_into_edges(self.population.chromosomes[0].value, self.edges)
 
@@ -174,16 +184,35 @@ def vector_into_edges(vector, edges):
     return edges_list
 
 
-# edges = [[1, 2], [1, 4], [1, 5], [2, 6], [2, 7], [3, 4], [3, 5], [3, 8], [4, 5], [5, 9], [6, 10], [7, 10], [7, 11], [8, 11], [8, 12], [9, 12], [10, 11], [10, 12], [11, 12]]
-# num_gen = 100
-# p = 60
-# num_iterations = 200
+edges = [[1, 2], [1, 4], [1, 5], [2, 6], [2, 7], [3, 4], [3, 5], [3, 8], [4, 5], [5, 9], [6, 10], [7, 10], [7, 11], [8, 11], [8, 12], [9, 12], [10, 11], [10, 12], [11, 12]]
+num_gen = 200
+p = 60
+num_iterations = 200
 # # [[1, 7], [1, 8], [2, 8], [3, 5], [3, 6], [3, 7], [4, 6]]
 # # [[1, 2], [1, 6], [2, 3], [2, 6], [3, 4], [3, 5], [5, 6]]
 # start_time = time.time()
-# ga = GeneticAlgorithm(edges, num_gen, p)
-# matching = ga.search_matching(num_iterations)
+ga = GeneticAlgorithm(edges, num_gen, p)
+matching = ga.search_matching(num_iterations)
 # end_time = time.time()
 # time_elapsed = end_time - start_time
-# print(matching)
+print(matching)
 # print(time_elapsed)
+
+import time
+
+plt.ion()
+fig, ax = plt.subplots()
+
+line, = ax.plot(vals[0], ' o', markersize=1)
+ax.set_ylim(0, 10)
+
+for v in vals:
+    line.set_ydata(v)
+
+    plt.draw()
+    plt.gcf().canvas.flush_events()
+
+    time.sleep(0.5)
+
+plt.ioff()
+plt.show()

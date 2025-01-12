@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Исследователь статей</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&amp;subset=cyrillic,cyrillic-ext,latin-ext" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400,500,600,700" rel="stylesheet">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <div class="container"></div>
+        </header>
+        <div class="wrapper">
+            <div class="page-background-2"></div>
+            <div class="page-background-1"></div>
+            <div class="wrap">
+                {% load static %}
+                {% if articles_list %}
+                    {% for article in articles_list %}
+                        <div>
+                            <div class="title">
+                                <h1>{{ article.title }}</h1>
+                            </div>
+                            <div class="meta">
+                                <div class="post-meta">
+                                  <span class="post-date">
+                                    {{ article.date }}
+                                  </span>
+                                  <em>/</em>
+                                  <span class="post-author">
+                                    {{ article.authors }}
+                                  </span>
+                                </div>
+                            </div>
+                            <div class="abstract">
+                                <p>
+                                  {{ article.abstract }}
+                                </p>
+                            </div>
+                            <form method="post" action="{% url 'save_article' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="title" value="{{article.title}}"/>
+                                <input type="hidden" name="authors" value="{{article.authors}}"/>
+                                <input type="hidden" name="year_published" value="{{article.year}}"/>
+                                <input type="hidden" name="abstract" value="{{article.abstract}}"/>
+                                <input type="hidden" name="source_url" value="{{article.source_url}}"/>
+                                <button type="submit">Читать далее</button>
+                            </form>
+                        </div>
+                        <div class="article-bottom"></div>
+                    {% endfor %}
+                {% else %}
+                    <p>Нет доступных статей.</p>
+                {% endif %}
+            </div>
+        </div>
+        <footer class="footer"></footer>
+    </div>
+</body>
+</html>
